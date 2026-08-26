@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 
+
 set -u
 
 readonly REPOSITORY="/home/zauryx/web/sentriq.xytriq.com/public_html"
