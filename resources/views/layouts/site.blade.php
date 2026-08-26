@@ -9,7 +9,7 @@
 
         <title>@yield('title', 'Sentriq') | Sentriq by Xytriq</title>
 
-        <link rel="icon" href="{{ asset('favicon.ico') }}">
+        <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon.png') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/site.css') }}?v={{ filemtime(public_path('assets/css/site.css')) }}">
 
         <meta property="og:locale" content="es_MX">
