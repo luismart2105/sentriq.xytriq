@@ -1,0 +1,494 @@
+:root {
+    --navy: #061a3a;
+    --blue: #1769db;
+    --surface: #f3f6fa;
+    --line: #dfe7f1;
+    --muted: #62738a;
+    --white: #fff;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #14263f;
+    background: var(--surface);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 20rem;
+    margin: 0;
+    background: var(--surface);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+.admin-header {
+    display: flex;
+    min-height: 4.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0.8rem max(1.25rem, calc((100% - 75rem) / 2));
+    color: var(--white);
+    background: var(--navy);
+}
+
+.admin-header > a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+}
+
+.admin-header > a strong {
+    letter-spacing: 0.17em;
+}
+
+.admin-header > a span {
+    color: #9fb4d0;
+    font-size: 0.75rem;
+}
+
+.admin-header nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-header nav a,
+.admin-header nav button {
+    color: #c8d5e7;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.82rem;
+}
+
+.admin-main {
+    width: min(calc(100% - 2rem), 75rem);
+    min-height: calc(100vh - 4.5rem);
+    margin-inline: auto;
+    padding: 3rem 0 6rem;
+}
+
+.admin-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.admin-heading span,
+.login-card > span {
+    color: var(--blue);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.admin-heading h1 {
+    margin: 0.3rem 0 0;
+    color: var(--navy);
+    font-size: 2.4rem;
+}
+
+.admin-heading p {
+    color: var(--muted);
+}
+
+.admin-button {
+    display: inline-flex;
+    min-height: 2.8rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.1rem;
+    color: var(--white);
+    border: 0;
+    border-radius: 0.6rem;
+    background: var(--blue);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.admin-alert {
+    margin-bottom: 1.5rem;
+    padding: 0.9rem 1rem;
+    color: #08653c;
+    border: 1px solid #8ad3b2;
+    border-radius: 0.65rem;
+    background: #eaf9f1;
+}
+
+.stat-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.stat-grid article {
+    display: flex;
+    min-height: 12rem;
+    flex-direction: column;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: var(--white);
+}
+
+.stat-grid article > span {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.stat-grid strong {
+    margin-top: auto;
+    color: var(--navy);
+    font-size: 3.2rem;
+}
+
+.stat-grid small {
+    color: var(--muted);
+}
+
+.admin-actions {
+    display: grid;
+    margin-top: 1rem;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.admin-card-link {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: var(--white);
+}
+
+.admin-card-link strong {
+    color: var(--navy);
+}
+
+.admin-card-link span {
+    margin-top: 0.4rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.login-card {
+    width: min(100%, 28rem);
+    margin: 5vh auto 0;
+    padding: 2rem;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: var(--white);
+}
+
+.login-card h1 {
+    margin: 0.5rem 0;
+    color: var(--navy);
+    font-size: 1.8rem;
+}
+
+.login-card > p {
+    margin: 0 0 2rem;
+    color: var(--muted);
+}
+
+.login-card form,
+.admin-form-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.login-card label,
+.admin-form label {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.login-card label > span,
+.admin-form label > span {
+    color: var(--navy);
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.login-card input,
+.admin-form input,
+.admin-form textarea,
+.invite-box input {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    color: #14263f;
+    border: 1px solid #cfd9e6;
+    border-radius: 0.55rem;
+    background: var(--white);
+}
+
+.login-card em,
+.admin-form em {
+    color: #b42318;
+    font-size: 0.72rem;
+    font-style: normal;
+}
+
+.check-control {
+    display: flex !important;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+}
+
+.check-control input {
+    width: auto;
+}
+
+.admin-form {
+    padding: 2rem;
+    border: 1px solid var(--line);
+    border-radius: 0.9rem;
+    background: var(--white);
+}
+
+.admin-form--narrow {
+    max-width: 48rem;
+}
+
+.form-help {
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+
+.admin-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.admin-form-full {
+    grid-column: 1 / -1;
+}
+
+.check-stack {
+    display: grid;
+    align-content: center;
+    gap: 0.6rem;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.form-actions > a {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: var(--white);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+}
+
+.admin-table th {
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.admin-table td {
+    font-size: 0.86rem;
+}
+
+.admin-table td > strong,
+.admin-table td > small {
+    display: block;
+}
+
+.admin-table td > small {
+    margin-top: 0.2rem;
+    color: var(--muted);
+}
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.8rem;
+}
+
+.table-actions a,
+.table-actions button {
+    color: var(--blue);
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-size: 0.78rem;
+}
+
+.status-pill {
+    display: inline-flex;
+    padding: 0.3rem 0.55rem;
+    color: #6d7785;
+    border-radius: 999px;
+    background: #edf0f4;
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.status-pill.is-active {
+    color: #08653c;
+    background: #dcf7e9;
+}
+
+.status-pill.is-pending {
+    color: #8a5700;
+    background: #fff1cf;
+}
+
+.empty-cell,
+.empty-panel {
+    padding: 3rem !important;
+    color: var(--muted);
+    text-align: center !important;
+}
+
+.invite-box {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #9fc1ef;
+    border-radius: 0.8rem;
+    background: #edf5ff;
+}
+
+.invite-box strong {
+    display: block;
+    margin-bottom: 0.7rem;
+    font-size: 0.82rem;
+}
+
+.invite-box > div {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.invite-box button,
+.review-actions button {
+    padding: 0.6rem 0.8rem;
+    color: var(--blue);
+    border: 1px solid #a8c3e8;
+    border-radius: 0.5rem;
+    background: var(--white);
+    cursor: pointer;
+}
+
+.review-admin-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.review-admin-card {
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: var(--white);
+}
+
+.review-admin-card__top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.review-admin-card h2 {
+    margin-bottom: 0.25rem;
+    color: var(--navy);
+    font-size: 1.2rem;
+}
+
+.review-admin-card blockquote {
+    margin: 1rem 0;
+    color: #384b65;
+    line-height: 1.6;
+}
+
+.review-admin-card > a {
+    display: inline-flex;
+    margin-bottom: 1rem;
+    color: var(--blue);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.review-admin-card code {
+    display: block;
+    padding: 0.75rem;
+    overflow-wrap: anywhere;
+    color: var(--blue);
+    border-radius: 0.5rem;
+    background: var(--surface);
+}
+
+.review-admin-card__rating {
+    margin-top: 1rem;
+    color: #e4a121;
+}
+
+.review-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+@media (max-width: 48rem) {
+    .admin-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-header nav {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .admin-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .stat-grid,
+    .admin-actions,
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-form-full {
+        grid-column: auto;
+    }
+}
