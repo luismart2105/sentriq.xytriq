@@ -25,22 +25,4 @@
         </div>
     </section>
 
-    <section class="section">
-        <div class="container">
-            <div class="section-heading section-heading--center">
-                <span class="eyebrow">El equipo</span>
-                <h2>Las personas detrás de Sentriq</h2>
-                <p>Estamos preparando los perfiles de nuestros tres colaboradores. Muy pronto podrás conocer su experiencia, funciones y certificaciones.</p>
-            </div>
-            <div class="team-grid">
-                @foreach (range(1, 3) as $member)
-                    <article class="team-card">
-                        <div class="team-card__placeholder"><span>S{{ $member }}</span></div>
-                        <h3>Perfil en preparación</h3>
-                        <p>Nombre, cargo, experiencia y certificaciones.</p>
-                    </article>
-                @endforeach
-            </div>
-        </div>
-    </section>
 @endsection

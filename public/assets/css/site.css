@@ -1137,50 +1137,6 @@ p {
     font-size: 1.1rem;
 }
 
-.team-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.team-card {
-    padding: 1rem 1rem 1.5rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-}
-
-.team-card__placeholder {
-    display: grid;
-    min-height: 20rem;
-    margin-bottom: 1.5rem;
-    color: var(--blue-500);
-    border-radius: 0.9rem;
-    background:
-        radial-gradient(circle at 50% 20%, rgba(40, 124, 234, 0.18), transparent 12rem),
-        var(--surface);
-    place-items: center;
-}
-
-.team-card__placeholder span {
-    display: grid;
-    width: 5rem;
-    height: 5rem;
-    border: 1px solid rgba(40, 124, 234, 0.25);
-    border-radius: 50%;
-    font-size: 1.3rem;
-    font-weight: 900;
-    place-items: center;
-}
-
-.team-card h3,
-.team-card p {
-    margin-inline: 0.5rem;
-}
-
-.team-card p {
-    margin-bottom: 0;
-}
-
 .warranty-page-grid {
     display: grid;
     gap: 1.25rem;
@@ -1902,13 +1858,8 @@ p {
     }
 
     .benefit-grid,
-    .team-grid,
     .warranty-page-grid {
         grid-template-columns: 1fr;
-    }
-
-    .team-card__placeholder {
-        min-height: 16rem;
     }
 
     .footer-grid {
