@@ -1,0 +1,6 @@
+SHELL=/usr/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+MAILTO=""
+
+# Consulta origin/main cada 10 minutos y aplica únicamente avances rápidos.
+*/10 * * * * root /usr/bin/flock -n /run/lock/sentriq-main-deploy.lock /home/zauryx/web/sentriq.xytriq.com/public_html/scripts/deploy-main.sh >> /home/zauryx/web/sentriq.xytriq.com/public_html/storage/logs/deploy-main.log 2>&1
