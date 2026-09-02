@@ -29,6 +29,34 @@
         @error('description') <em>{{ $message }}</em> @enderror
     </label>
     <label class="admin-form-full">
+        <span>Etiqueta del precio <small>(opcional)</small></span>
+        <input type="text" name="price_label" maxlength="80" value="{{ old('price_label', $kit->price_label) }}" placeholder="Precio de introducción">
+        @error('price_label') <em>{{ $message }}</em> @enderror
+    </label>
+    @foreach (['image' => 'Cámaras o kit', 'cabinet_image' => 'Gabinete incluido'] as $field => $label)
+        <div class="kit-media-editor">
+            @if ($kit->imageUrl($field.'_path'))
+                <img src="{{ $kit->imageUrl($field.'_path') }}" alt="{{ $kit->getAttribute($field.'_caption') ?: $label }}" width="240" height="180">
+            @endif
+            <label>
+                <span>{{ $label }} <small>(JPG, PNG o WebP; máximo 5 MB)</small></span>
+                <input type="file" name="{{ $field }}" accept="image/jpeg,image/png,image/webp">
+                @error($field) <em>{{ $message }}</em> @enderror
+            </label>
+            <label>
+                <span>Descripción de la foto / modelo</span>
+                <input type="text" name="{{ $field }}_caption" maxlength="255" value="{{ old($field.'_caption', $kit->getAttribute($field.'_caption')) }}">
+                @error($field.'_caption') <em>{{ $message }}</em> @enderror
+            </label>
+            <label class="check-control"><input type="checkbox" name="remove_{{ $field }}" value="1" @checked(old('remove_'.$field))><span>Quitar imagen (una nueva carga tiene prioridad)</span></label>
+        </div>
+    @endforeach
+    <label class="admin-form-full">
+        <span>Alcance y condiciones <small>(se muestran en el catálogo)</small></span>
+        <textarea name="conditions" rows="6" maxlength="4000">{{ old('conditions', $kit->conditions) }}</textarea>
+        @error('conditions') <em>{{ $message }}</em> @enderror
+    </label>
+    <label class="admin-form-full">
         <span>Características <small>(una por línea)</small></span>
         <textarea name="features_text" rows="8" maxlength="4000" placeholder="4 cámaras de 2 MP&#10;Grabador con acceso remoto&#10;Disco duro de 1 TB">{{ $featuresText }}</textarea>
         @error('features_text') <em>{{ $message }}</em> @enderror

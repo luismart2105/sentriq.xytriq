@@ -14,6 +14,12 @@ class Kit extends Model
         'camera_count',
         'price',
         'description',
+        'price_label',
+        'conditions',
+        'image_path',
+        'image_caption',
+        'cabinet_image_path',
+        'cabinet_image_caption',
         'features',
         'installation_included',
         'featured',
@@ -35,5 +41,12 @@ class Kit extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('active', true)->orderBy('sort_order')->orderBy('price');
+    }
+
+    public function imageUrl(string $field = 'image_path'): ?string
+    {
+        $path = $this->getAttribute($field);
+
+        return $path ? asset($path) : null;
     }
 }

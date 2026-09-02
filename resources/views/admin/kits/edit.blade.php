@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="admin-heading"><div><span>Catálogo</span><h1>Editar {{ $kit->name }}</h1></div></div>
-    <form class="admin-form" method="POST" action="{{ route('admin.kits.update', $kit) }}">
+    <form class="admin-form" method="POST" enctype="multipart/form-data" action="{{ route('admin.kits.update', $kit) }}">
         @csrf @method('PUT')
         @include('admin.kits.form')
     </form>

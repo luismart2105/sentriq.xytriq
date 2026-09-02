@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="admin-heading"><div><span>Catálogo</span><h1>Nuevo kit</h1></div></div>
-    <form class="admin-form" method="POST" action="{{ route('admin.kits.store') }}">
+    <form class="admin-form" method="POST" enctype="multipart/form-data" action="{{ route('admin.kits.store') }}">
         @csrf
         @include('admin.kits.form')
     </form>

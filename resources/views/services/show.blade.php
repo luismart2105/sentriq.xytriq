@@ -52,19 +52,31 @@
     </section>
 
     @if ($kits->isNotEmpty())
-        <section class="section">
+        <section class="section" id="paquetes">
             <div class="container">
                 <div class="section-heading section-heading--split">
                     <div>
                         <span class="eyebrow">Kits con instalación incluida</span>
                         <h2>Opciones listas para comenzar</h2>
                     </div>
-                    <p>Los precios y características se actualizan desde nuestro catálogo. Los trabajos o materiales adicionales se confirman después de la valoración.</p>
+                    <p>Elige la cobertura para tu casa o negocio. Revisa el equipo y el alcance de cada paquete; cualquier trabajo adicional se cotiza antes de instalar.</p>
                 </div>
 
                 <div class="kit-grid">
                     @foreach ($kits as $kit)
                         <article @class(['kit-card', 'kit-card--featured' => $kit->featured])>
+                            @if ($kit->image_path || $kit->cabinet_image_path)
+                                <div class="kit-card__media">
+                                    @foreach (['image', 'cabinet_image'] as $imageField)
+                                        @if ($kit->imageUrl($imageField.'_path'))
+                                            <figure>
+                                                <img src="{{ $kit->imageUrl($imageField.'_path') }}" alt="{{ $kit->getAttribute($imageField.'_caption') ?: $kit->name }}" width="400" height="300" loading="lazy" decoding="async">
+                                                <figcaption>{{ $kit->getAttribute($imageField.'_caption') }}</figcaption>
+                                            </figure>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
                             @if ($kit->featured)
                                 <span class="kit-card__tag">Recomendado</span>
                             @endif
@@ -73,6 +85,9 @@
                                 <p>{{ $kit->description }}</p>
                             @endif
                             <strong class="kit-card__price">${{ number_format((float) $kit->price, 2) }} <small>MXN</small></strong>
+                            @if ($kit->price_label)
+                                <span class="kit-card__price-label">{{ $kit->price_label }}</span>
+                            @endif
                             <ul class="check-list">
                                 @foreach ($kit->features ?? [] as $feature)
                                     <li><x-icon name="check" /> {{ $feature }}</li>
@@ -81,6 +96,12 @@
                                     <li><x-icon name="check" /> Instalación incluida</li>
                                 @endif
                             </ul>
+                            @if ($kit->conditions)
+                                <details class="kit-card__conditions">
+                                    <summary>Alcance y condiciones</summary>
+                                    <p>{{ $kit->conditions }}</p>
+                                </details>
+                            @endif
                             <a class="button button--whatsapp" href="https://wa.me/{{ config('sentriq.contact.whatsapp_number') }}?text={{ rawurlencode('Hola Sentriq, me interesa el '.$kit->name.' con precio de $'.number_format((float) $kit->price, 2).' MXN.') }}" target="_blank" rel="noopener">
                                 <x-icon name="whatsapp" /> Consultar este kit
                             </a>

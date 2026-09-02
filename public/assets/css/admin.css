@@ -492,3 +492,5 @@ textarea {
         grid-column: auto;
     }
 }
+ .kit-media-editor { display: grid; gap: 1rem; min-width: 0; }
+ .kit-media-editor img { max-width: 100%; object-fit: contain; background: white; border-radius: 0.5rem; }
