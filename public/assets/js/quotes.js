@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editor = document.querySelector('[data-quote-items]');
     if (!editor) return;
     const list = editor.querySelector('.quote-items');
-    const template = editor.querySelector('[data-item-template]');
+    const template = document.querySelector('[data-item-template]');
     const money = value => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value || 0);
 
     function refresh() {

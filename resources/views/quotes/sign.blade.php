@@ -35,6 +35,6 @@
         @endif
     </main>
     <footer>Sentriq · Seguridad inteligente para tus espacios</footer>
-    <script src="{{ asset('assets/js/quotes.js') }}" defer></script>
+    <script src="{{ asset('assets/js/quotes.js') }}?v={{ filemtime(public_path('assets/js/quotes.js')) }}" defer></script>
 </body>
 </html>

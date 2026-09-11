@@ -70,4 +70,4 @@
 <template data-item-template>
     <article class="quote-item" data-item><div class="quote-item__bar"><strong>Partida <span data-item-number></span></strong><button type="button" data-remove-item>Quitar</button></div><div class="quote-item__grid"><label><span>Concepto</span><input data-name="concept" required></label><label><span>Marca / modelo</span><input data-name="model"></label><label class="item-benefit"><span>Beneficio para el cliente</span><textarea data-name="benefit" rows="2"></textarea></label><label><span>Cantidad</span><input data-name="quantity" data-quantity type="number" min="0.01" step="0.01" value="1" required></label><label><span>Precio unitario</span><input data-name="unit_price" data-price type="number" min="0" step="0.01" value="0" required></label><div class="item-total"><span>Importe</span><strong data-line-total>$0.00</strong></div></div></article>
 </template>
-<script src="{{ asset('assets/js/quotes.js') }}" defer></script>
+<script src="{{ asset('assets/js/quotes.js') }}?v={{ filemtime(public_path('assets/js/quotes.js')) }}" defer></script>
