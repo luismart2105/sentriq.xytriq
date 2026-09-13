@@ -4,7 +4,7 @@
     <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $quote->number }} | Sentriq</title>
     <link rel="icon" href="{{ asset('assets/brand/favicon.png') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/quote.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/quote.css') }}?v={{ filemtime(public_path('assets/css/quote.css')) }}">
 </head>
 <body>
     <div class="print-toolbar"><a href="{{ ($publicMode ?? false) ? route('quotes.sign', $quote->signing_token) : route('admin.quotes.edit', $quote) }}">← {{ ($publicMode ?? false) ? 'Volver a firma' : 'Editar' }}</a><span>Revisa la vista previa y selecciona “Guardar como PDF”.</span><button onclick="window.print()">Imprimir / Guardar PDF</button></div>
