@@ -6,6 +6,7 @@
     <title>Firmar {{ $quote->number }} | Sentriq</title>
     <link rel="icon" href="{{ asset('assets/brand/favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/client-signature.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/client-payment.css') }}?v={{ filemtime(public_path('assets/css/client-payment.css')) }}">
 </head>
 <body>
     <header class="client-header"><img src="{{ asset('assets/brand/FullLogo_Transparent_NoBuffer.png') }}" alt="Sentriq"><span>Autorización de presupuesto</span></header>
@@ -15,6 +16,7 @@
             <div class="summary-heading"><div><small>{{ $quote->number }}</small><h1>{{ $quote->title }}</h1><p>Preparado para {{ $quote->client_name }}</p></div><div class="summary-total"><span>Inversión total</span><strong>${{ number_format($quote->total(), 2) }} MXN</strong></div></div>
             <dl><dt>Fecha</dt><dd>{{ $quote->quote_date->format('d/m/Y') }}</dd><dt>Vigencia</dt><dd>{{ $quote->validity_days }} días naturales</dd></dl>
             <div class="client-items"><table><thead><tr><th>Concepto</th><th>Cantidad</th><th>Importe</th></tr></thead><tbody>@foreach($quote->items as $item)<tr><td><strong>{{ $item['concept'] }}</strong>@if($item['model'])<small>{{ $item['model'] }}</small>@endif</td><td>{{ number_format((float)$item['quantity'], (float)$item['quantity'] == floor((float)$item['quantity']) ? 0 : 2) }}</td><td>${{ number_format((float)$item['quantity'] * (float)$item['unit_price'], 2) }}</td></tr>@endforeach<tr><td>Instalación, configuración y puesta en marcha</td><td>—</td><td>${{ number_format((float)$quote->installation_amount, 2) }}</td></tr></tbody></table></div>
+            <div class="client-payment-summary"><span>Anticipo requerido <strong>${{ number_format((float) $quote->deposit_amount, 2) }} MXN</strong></span><span>Saldo restante <strong>${{ number_format($quote->remainingBalance(), 2) }} MXN</strong></span></div>
             <a class="document-link" href="{{ route('quotes.document', $quote->signing_token) }}" target="_blank">Ver presupuesto completo</a>
         </section>
 
@@ -28,7 +30,7 @@
                 <div class="signature-canvas-wrap"><canvas data-signature-canvas aria-label="Área para dibujar la firma"></canvas><span>Firma aquí</span></div>
                 <div class="pad-actions"><button type="button" data-clear-signature>Limpiar firma</button></div>
                 <input type="hidden" name="signature_data" data-signature-data>@error('signature_data')<em>{{ $message }}</em>@enderror
-                <label class="acceptance"><input type="checkbox" name="acceptance" value="1" required><span>Acepto que esta firma electrónica representa mi autorización del presupuesto {{ $quote->number }} por un total de ${{ number_format($quote->total(), 2) }} MXN.</span></label>@error('acceptance')<em>{{ $message }}</em>@enderror
+                <label class="acceptance"><input type="checkbox" name="acceptance" value="1" required><span>Acepto que esta firma electrónica representa mi autorización del presupuesto {{ $quote->number }} por un total de ${{ number_format($quote->total(), 2) }} MXN, con un anticipo requerido de ${{ number_format((float) $quote->deposit_amount, 2) }} MXN.</span></label>@error('acceptance')<em>{{ $message }}</em>@enderror
                 <button class="sign-submit" type="submit">Firmar y autorizar presupuesto</button>
                 <small class="security-note">La fecha, hora y datos técnicos de esta autorización se registrarán como evidencia.</small>
             </form>

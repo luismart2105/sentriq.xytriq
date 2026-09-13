@@ -122,6 +122,7 @@ class QuoteController extends Controller
             'title' => ['required', 'string', 'max:200'],
             'description' => ['nullable', 'string', 'max:1000'],
             'installation_amount' => ['nullable', 'numeric', 'min:0', 'max:999999999'],
+            'deposit_amount' => ['nullable', 'numeric', 'min:0', 'max:999999999'],
             'equipment_warranty_duration' => ['required', 'integer', 'min:0', 'max:1200'],
             'equipment_warranty_unit' => ['required', Rule::in(['months', 'years'])],
             'equipment_warranty' => ['nullable', 'required_if:equipment_warranty_duration,0', 'string', 'max:4000'],
@@ -150,6 +151,15 @@ class QuoteController extends Controller
             'unit_price' => round((float) $item['unit_price'], 2),
         ])->values()->all();
         $validated['installation_amount'] = $validated['installation_amount'] ?? 0;
+        $validated['deposit_amount'] = $validated['deposit_amount'] ?? 0;
+
+        $total = collect($validated['items'])->sum(fn (array $item): float => $item['quantity'] * $item['unit_price'])
+            + (float) $validated['installation_amount'];
+        if ((float) $validated['deposit_amount'] > $total) {
+            throw ValidationException::withMessages([
+                'deposit_amount' => 'El anticipo no puede ser mayor al total del proyecto.',
+            ]);
+        }
 
         return $validated;
     }

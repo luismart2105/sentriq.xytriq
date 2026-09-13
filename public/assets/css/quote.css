@@ -29,6 +29,7 @@ h2 { margin:.12in 0 .08in; color:var(--navy); font-size:14px; }
 .totals { width:calc(100% - .2in); margin:.07in .1in 0; border:1px solid var(--line); }
 .totals > div { display:flex; min-height:.27in; align-items:center; justify-content:space-between; padding:.05in .1in; background:#edf4fd; border-bottom:1px solid var(--line); font-size:8px; }
 .totals .grand-total { color:white; border:0; background:var(--blue); font-size:11px; letter-spacing:.04em; text-transform:uppercase; }.grand-total strong{font-size:13px}
+.totals .deposit-total { color:var(--navy);background:#dcecff;font-weight:700 }
 .currency-note { margin:.04in .1in; font-size:6.2px; text-align:right; }
 footer { position:absolute; right:.62in; bottom:.18in; left:.62in; display:flex; justify-content:space-between; padding-top:.08in; border-top:1px solid var(--line); color:#536982; font-size:6.5px; }
 .page-two { padding-top:.18in; }
@@ -38,6 +39,7 @@ footer { position:absolute; right:.62in; bottom:.18in; left:.62in; display:flex;
 .warranty h3 { margin:0 0 .035in; font-size:12px; }.warranty p{margin:0;font-size:8.5px;line-height:1.45}
 .page-two h2 { margin:.16in 0 .05in; }.page-two ul{margin:.03in 0 .1in;padding-left:.18in}.page-two li{margin:.035in 0;font-size:8.5px;line-height:1.42}
 .investment { display:flex; align-items:center; justify-content:space-between; margin:.17in .14in; padding:.13in .14in; color:white; background:var(--navy); font-size:8px; letter-spacing:.06em; text-transform:uppercase; }.investment strong{font-size:15px}
+.deposit-summary{display:flex;justify-content:space-between;margin:-.12in .14in .17in;padding:.08in .14in;color:var(--navy);background:#e5f0fd;font-size:7.5px;text-transform:uppercase}.deposit-summary span{display:flex;gap:.08in}.deposit-summary strong{font-size:8px}
 .signatures { display:grid; margin:.38in .25in 0; grid-template-columns:1fr 1fr; gap:.45in; }.signatures div{display:grid;padding-top:.07in;border-top:1px solid #425873;font-size:7.5px;text-transform:uppercase}.signatures strong{margin-top:.08in;font-size:8px;font-weight:400;text-transform:none}
 .signed-by-sentriq { position:relative; }.signed-by-sentriq img { position:absolute; z-index:1; bottom:.12in; left:.15in; width:1.7in; height:.65in; object-fit:contain; }.signed-by-sentriq strong,.signed-by-sentriq span{position:relative;z-index:2}
 .signed-by-client { position:relative; }.signed-by-client img { position:absolute; z-index:1; bottom:.12in; left:.15in; width:1.7in; height:.65in; object-fit:contain; }.signed-by-client strong,.signed-by-client span{position:relative;z-index:2}

@@ -1,0 +1,28 @@
+.client-payment-summary {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    color: var(--navy);
+    border-radius: 0.5rem;
+    background: #edf5ff;
+    font-size: 0.75rem;
+}
+
+.client-payment-summary span {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.client-payment-summary strong {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 42rem) {
+    .client-payment-summary {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}

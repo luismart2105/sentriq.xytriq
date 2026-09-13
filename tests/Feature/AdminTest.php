@@ -51,6 +51,7 @@ class AdminTest extends DatabaseTestCase
             'quote_date' => '2026-09-11', 'validity_days' => 15,
             'title' => 'Presupuesto de acceso inteligente', 'status' => 'draft',
             'installation_amount' => 2000,
+            'deposit_amount' => 5000,
             'equipment_warranty_duration' => 6, 'equipment_warranty_unit' => 'months',
             'installation_warranty_duration' => 0, 'installation_warranty_unit' => 'years',
             'installation_warranty' => 'La reparación se realiza sobre componentes existentes.',
@@ -61,6 +62,7 @@ class AdminTest extends DatabaseTestCase
         $this->assertSame('COT-2026-0911-01', $quote->number);
         $response->assertRedirect(route('admin.quotes.edit', $quote));
         $this->assertSame(5000.0, $quote->total());
+        $this->assertSame(0.0, $quote->remainingBalance());
         $this->get(route('admin.quotes.show', $quote))->assertOk()->assertSee('Cliente Ejemplo')->assertSee('$5,000.00', false);
         $this->assertSame('6 meses de garantía', $quote->warrantyLabel('equipment'));
         $this->assertSame('Sin garantía', $quote->warrantyLabel('installation'));

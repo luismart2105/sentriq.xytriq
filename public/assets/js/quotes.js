@@ -24,7 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         editor.querySelector('[data-materials-total]').textContent = money(subtotal);
         const installation = parseFloat(editor.querySelector('[data-installation]').value) || 0;
-        editor.querySelector('[data-grand-total]').textContent = `${money(subtotal + installation)} MXN`;
+        const total = subtotal + installation;
+        const deposit = parseFloat(editor.querySelector('[data-deposit]').value) || 0;
+        editor.querySelector('[data-grand-total]').textContent = `${money(total)} MXN`;
+        editor.querySelector('[data-remaining-balance]').textContent = money(Math.max(0, total - deposit));
         list.querySelectorAll('[data-remove-item]').forEach(button => button.disabled = list.children.length === 1);
     }
     editor.addEventListener('input', refresh);

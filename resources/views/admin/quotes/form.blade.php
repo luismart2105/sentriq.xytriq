@@ -43,7 +43,7 @@
         @endforeach
     </div>
     <button class="admin-button admin-button--secondary" type="button" data-add-item>+ Agregar partida</button>
-    <div class="quote-calculation"><span>Subtotal materiales <strong data-materials-total>$0.00</strong></span><label><span>Instalación y puesta en marcha</span><input data-installation type="number" name="installation_amount" min="0" step="0.01" value="{{ old('installation_amount', $quote->installation_amount ?? 0) }}"></label><span class="quote-calculation__total">Total del proyecto <strong data-grand-total>$0.00 MXN</strong></span></div>
+    <div class="quote-calculation"><span>Subtotal materiales <strong data-materials-total>$0.00</strong></span><label><span>Instalación y puesta en marcha</span><input data-installation type="number" name="installation_amount" min="0" step="0.01" value="{{ old('installation_amount', $quote->installation_amount ?? 0) }}"></label><span class="quote-calculation__total">Total del proyecto <strong data-grand-total>$0.00 MXN</strong></span><label class="quote-calculation__deposit"><span>Anticipo requerido</span><input data-deposit type="number" name="deposit_amount" min="0" step="0.01" value="{{ old('deposit_amount', $quote->deposit_amount ?? 0) }}"></label>@error('deposit_amount')<em class="quote-calculation__error">{{ $message }}</em>@enderror<span>Saldo restante <strong data-remaining-balance>$0.00</strong></span></div>
 </section>
 
 <section class="form-section">
