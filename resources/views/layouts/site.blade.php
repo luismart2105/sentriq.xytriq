@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#061a3a">
-        <meta name="robots" content="noindex, nofollow">
+        <meta name="robots" content="index, follow">
         <meta name="description" content="@yield('description', 'Soluciones de seguridad electrónica para hogares, negocios y empresas en Guadalajara y su Zona Metropolitana.')">
 
         <title>@yield('title', 'Sentriq') | Sentriq by Xytriq</title>
