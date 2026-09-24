@@ -11,7 +11,7 @@ return [
         'whatsapp_display' => '+52 33 2123 1570',
         'whatsapp_number' => '523321231570',
         'whatsapp_url' => 'https://wa.me/523321231570?text=Hola%20Sentriq%2C%20me%20gustar%C3%ADa%20recibir%20asesor%C3%ADa%20para%20un%20proyecto%20de%20seguridad.',
-        'email' => 'soporte@sentriq.xytriq.com',
+        'email' => 'support@sentriq.xytriq.com',
         'facebook' => 'https://www.facebook.com/sentriq.xytriq',
         'hours' => 'Lunes a sábado, de 10:00 a. m. a 8:00 p. m.',
     ],
