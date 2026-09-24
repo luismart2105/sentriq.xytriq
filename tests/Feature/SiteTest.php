@@ -25,13 +25,14 @@ class SiteTest extends DatabaseTestCase
         }
     }
 
-    public function test_home_is_branded_and_temporarily_not_indexable(): void
+    public function test_home_is_branded_and_indexable(): void
     {
         $this->get('/')
             ->assertOk()
             ->assertSee('Protegemos tu espacio con soluciones hechas para ti.')
             ->assertSee('wa.me/523321231570', false)
-            ->assertSee('noindex, nofollow', false)
+            ->assertSee('index, follow', false)
+            ->assertDontSee('noindex, nofollow', false)
             ->assertDontSee('Deploy now');
     }
 
