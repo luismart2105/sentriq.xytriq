@@ -22,6 +22,10 @@ return [
         'notification_email' => env('SENTRIQ_LEAD_NOTIFICATION_EMAIL', env('MAIL_FROM_ADDRESS')),
     ],
 
+    'privacy' => [
+        'responsible_name' => 'Luisangel Alfonso Martinez Hernandez',
+    ],
+
     'coverage' => [
         'Guadalajara',
         'Zapopan',
