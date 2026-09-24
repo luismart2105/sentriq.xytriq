@@ -30,6 +30,26 @@
         </div>
     </section>
 
+    @if (config('sentriq.leads.form_enabled'))
+        <section class="section" id="formulario">
+            <div class="container lead-form-layout">
+                <div><span class="eyebrow">Solicitud en línea</span><h2>Solicita que te contactemos</h2><p>Comparte lo esencial. El levantamiento técnico, selección de equipos y precio se confirman después de revisar tu proyecto.</p></div>
+                <form class="lead-form" method="POST" action="{{ route('contact.store') }}">@csrf
+                    @if (session('contact_success'))<div class="form-success" role="status">{{ session('contact_success') }}</div>@endif
+                    <div class="honeypot" aria-hidden="true"><label>No llenar<input name="website" tabindex="-1" autocomplete="off"></label></div>
+                    <label><span>Nombre</span><input name="name" value="{{ old('name') }}" maxlength="160" autocomplete="name" required>@error('name')<em>{{ $message }}</em>@enderror</label>
+                    <div class="lead-form__row"><label><span>Teléfono</span><input name="phone" value="{{ old('phone') }}" maxlength="40" autocomplete="tel">@error('phone')<em>{{ $message }}</em>@enderror</label><label><span>Correo</span><input type="email" name="email" value="{{ old('email') }}" autocomplete="email">@error('email')<em>{{ $message }}</em>@enderror</label></div>
+                    <div class="lead-form__row"><label><span>Servicio</span><select name="service_interest" required><option value="">Selecciona una opción</option>@foreach (config('sentriq.services') as $key => $service)<option value="{{ $key }}" @selected(old('service_interest') === $key)>{{ $service['name'] }}</option>@endforeach</select></label><label><span>Municipio o zona</span><input name="municipality" value="{{ old('municipality') }}" maxlength="120" required></label></div>
+                    <label><span>Cuéntanos brevemente qué necesitas</span><textarea name="description" rows="5" maxlength="2000" required>{{ old('description') }}</textarea>@error('description')<em>{{ $message }}</em>@enderror</label>
+                    @foreach ($campaign as $key => $value)<input type="hidden" name="{{ $key }}" value="{{ old($key, $value) }}">@endforeach
+                    <input type="hidden" name="landing_page" value="{{ old('landing_page', request()->fullUrl()) }}"><input type="hidden" name="referrer" value="{{ old('referrer', request()->headers->get('referer')) }}">
+                    <label class="privacy-check"><input type="checkbox" name="privacy_accepted" value="1" @checked(old('privacy_accepted')) required><span>He leído y acepto el <a href="{{ route('privacy') }}" target="_blank">aviso de privacidad</a> para que Sentriq atienda mi solicitud.</span></label>@error('privacy_accepted')<em>{{ $message }}</em>@enderror
+                    <button class="button button--primary" type="submit">Enviar solicitud</button>
+                </form>
+            </div>
+        </section>
+    @endif
+
     <section class="section">
         <div class="container repair-card">
             <div class="service-card__icon"><x-icon name="shield" /></div>

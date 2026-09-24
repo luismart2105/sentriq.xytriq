@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#061a3a">
-        <meta name="robots" content="index, follow">
+        <meta name="robots" content="@yield('robots', 'index, follow')">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="description" content="@yield('description', 'Soluciones de seguridad electrónica para hogares, negocios y empresas en Guadalajara y su Zona Metropolitana.')">
 
         <title>@yield('title', 'Sentriq') | Sentriq by Xytriq</title>
@@ -95,6 +96,7 @@
                         <li><a href="{{ route('about') }}">Nosotros</a></li>
                         <li><a href="{{ route('warranty') }}">Garantías</a></li>
                         <li><a href="{{ route('contact') }}">Contacto</a></li>
+                        <li><a href="{{ route('privacy') }}">Aviso de privacidad</a></li>
                     </ul>
                 </div>
 

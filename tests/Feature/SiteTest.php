@@ -20,6 +20,7 @@ class SiteTest extends DatabaseTestCase
             '/nosotros',
             '/garantias',
             '/contacto',
+            '/aviso-de-privacidad',
         ] as $url) {
             $this->get($url)->assertOk();
         }

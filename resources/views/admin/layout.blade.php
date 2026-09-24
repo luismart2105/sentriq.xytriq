@@ -14,6 +14,8 @@
             @auth
                 <nav>
                     <a href="{{ route('admin.dashboard') }}">Resumen</a>
+                    <a href="{{ route('admin.prospects.today') }}">Hoy</a>
+                    <a href="{{ route('admin.prospects.index') }}">Prospectos</a>
                     <a href="{{ route('admin.kits.index') }}">Kits</a>
                     <a href="{{ route('admin.quotes.index') }}">Presupuestos</a>
                     <a href="{{ route('admin.reviews.index') }}">Reseñas</a>

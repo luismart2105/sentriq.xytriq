@@ -16,6 +16,12 @@ return [
         'hours' => 'Lunes a sábado, de 10:00 a. m. a 8:00 p. m.',
     ],
 
+    'leads' => [
+        // Activar solamente después de que Luisangel apruebe el aviso de privacidad.
+        'form_enabled' => (bool) env('SENTRIQ_LEAD_FORM_ENABLED', false),
+        'notification_email' => env('SENTRIQ_LEAD_NOTIFICATION_EMAIL', env('MAIL_FROM_ADDRESS')),
+    ],
+
     'coverage' => [
         'Guadalajara',
         'Zapopan',

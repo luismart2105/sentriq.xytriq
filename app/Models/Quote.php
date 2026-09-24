@@ -3,17 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Quote extends Model
 {
     protected $fillable = [
-        'number', 'client_name', 'quote_date', 'validity_days', 'title', 'description',
+        'prospect_id', 'number', 'client_name', 'quote_date', 'validity_days', 'title', 'description',
         'items', 'installation_amount', 'deposit_amount', 'equipment_warranty_duration', 'equipment_warranty_unit',
         'equipment_warranty', 'installation_warranty_duration', 'installation_warranty_unit', 'installation_warranty',
         'installation_scope', 'project_considerations', 'project_manager', 'signature_path',
         'signing_token', 'client_signer_name', 'client_signature_path', 'signed_at',
         'signed_ip', 'signed_user_agent', 'status',
     ];
+
+    public function prospect(): BelongsTo
+    {
+        return $this->belongsTo(Prospect::class);
+    }
 
     protected function casts(): array
     {

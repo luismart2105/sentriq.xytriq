@@ -6,6 +6,7 @@
     <div class="admin-form-grid">
         <label><span>Folio automático</span><input value="{{ $quote->number }}" readonly aria-describedby="folio-help"><small id="folio-help" class="form-help">Se asignará el siguiente consecutivo disponible al guardar.</small></label>
         <label><span>Cliente</span><input name="client_name" value="{{ old('client_name', $quote->client_name) }}" placeholder="Nombre o razón social" required>@error('client_name')<em>{{ $message }}</em>@enderror</label>
+        <label><span>Prospecto relacionado <small>(opcional)</small></span><select name="prospect_id"><option value="">Sin relacionar</option>@foreach ($prospects as $prospect)<option value="{{ $prospect->id }}" @selected((string) old('prospect_id', $quote->prospect_id) === (string) $prospect->id)>{{ $prospect->displayName() }} · {{ $prospect->phone ?: $prospect->email }}</option>@endforeach</select>@error('prospect_id')<em>{{ $message }}</em>@enderror</label>
         <label><span>Fecha</span><input type="date" name="quote_date" value="{{ old('quote_date', optional($quote->quote_date)->format('Y-m-d')) }}" required></label>
         <label><span>Vigencia (días naturales)</span><input type="number" name="validity_days" min="1" max="365" value="{{ old('validity_days', $quote->validity_days) }}" required></label>
         <label class="admin-form-full"><span>Título</span><input name="title" value="{{ old('title', $quote->title) }}" required></label>

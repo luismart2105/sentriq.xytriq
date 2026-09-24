@@ -9,12 +9,16 @@
     </div>
 
     <div class="stat-grid">
+        <article><span>Prospectos nuevos</span><strong>{{ $newProspectCount }}</strong><small>sin cerrar</small></article>
+        <article><span>Seguimientos</span><strong>{{ $dueFollowUpCount }}</strong><small>vencidos o para hoy</small></article>
         <article><span>Kits</span><strong>{{ $kitCount }}</strong><small>{{ $activeKitCount }} publicados</small></article>
         <article><span>Reseñas pendientes</span><strong>{{ $pendingReviewCount }}</strong><small>por revisar</small></article>
         <article><span>Reseñas publicadas</span><strong>{{ $approvedReviewCount }}</strong><small>visibles en el sitio</small></article>
     </div>
 
     <div class="admin-actions">
+        <a class="admin-card-link" href="{{ route('admin.prospects.today') }}"><strong>Revisar pendientes de hoy</strong><span>Nuevos, seguimientos, visitas y cotizaciones.</span></a>
+        <a class="admin-card-link" href="{{ route('admin.prospects.create') }}"><strong>Registrar prospecto</strong><span>Captura una conversación de WhatsApp, Facebook o recomendación.</span></a>
         <a class="admin-card-link" href="{{ route('admin.kits.create') }}"><strong>Crear un kit</strong><span>Agrega precio, características y disponibilidad.</span></a>
         <a class="admin-card-link" href="{{ route('admin.reviews.index') }}"><strong>Invitar a dejar una reseña</strong><span>Genera un enlace privado para un cliente.</span></a>
     </div>

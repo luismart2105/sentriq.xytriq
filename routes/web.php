@@ -4,12 +4,16 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\KitController as AdminKitController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\ProspectActivityController as AdminProspectActivityController;
+use App\Http\Controllers\Admin\ProspectController as AdminProspectController;
 use App\Http\Controllers\Admin\QuoteController as AdminQuoteController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\ClientQuoteSignatureController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReviewSubmissionController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\WhatsappClickController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -19,7 +23,11 @@ Route::get('/servicios/{service}', [ServiceController::class, 'show'])->name('se
 
 Route::view('/nosotros', 'about')->name('about');
 Route::view('/garantias', 'warranty')->name('warranty');
-Route::view('/contacto', 'contact')->name('contact');
+Route::get('/contacto', [ContactController::class, 'create'])->name('contact');
+Route::post('/contacto', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
+Route::view('/aviso-de-privacidad', 'privacy')->name('privacy');
+Route::post('/eventos/whatsapp', [WhatsappClickController::class, 'store'])
+    ->middleware('throttle:60,1')->name('events.whatsapp');
 
 Route::get('/opinar/{token}', [ReviewSubmissionController::class, 'show'])->name('reviews.show');
 Route::post('/opinar/{token}', [ReviewSubmissionController::class, 'store'])
@@ -48,6 +56,12 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
             ->middleware('throttle:5,1')
             ->name('profile.update');
         Route::resource('kits', AdminKitController::class)->except('show');
+        Route::get('/prospectos/hoy', [AdminProspectController::class, 'today'])->name('prospects.today');
+        Route::post('/prospectos/{prospect}/actividades', [AdminProspectActivityController::class, 'store'])->name('prospects.activities.store');
+        Route::resource('prospectos', AdminProspectController::class)
+            ->parameters(['prospectos' => 'prospect'])
+            ->except('destroy')
+            ->names('prospects');
         Route::post('/presupuestos/{quote}/duplicar', [AdminQuoteController::class, 'duplicate'])->name('quotes.duplicate');
         Route::post('/presupuestos/{quote}/enlace-firma', [AdminQuoteController::class, 'signingLink'])->name('quotes.signing-link');
         Route::resource('presupuestos', AdminQuoteController::class)

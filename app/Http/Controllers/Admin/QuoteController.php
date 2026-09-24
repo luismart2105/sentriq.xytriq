@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Prospect;
 use App\Models\Quote;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -21,10 +22,11 @@ class QuoteController extends Controller
         return view('admin.quotes.index', ['quotes' => Quote::latest('quote_date')->latest()->get()]);
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
         return view('admin.quotes.create', [
             'quote' => new Quote([
+                'prospect_id' => $request->integer('prospect_id') ?: null,
                 'number' => $this->nextNumber(now()),
                 'quote_date' => now(), 'validity_days' => 15,
                 'title' => 'Presupuesto de solución de seguridad inteligente',
@@ -36,6 +38,7 @@ class QuoteController extends Controller
                 'installation_warranty' => 'La mano de obra de instalación cuenta con 2 años de garantía. Cubre correcciones necesarias por fallas directamente atribuibles al montaje, fijaciones, terminaciones, cableado instalado o configuración realizada por Sentriq. No cubre cambios posteriores en red, Internet, energía, portón, obra civil ni modificaciones hechas por terceros.',
                 'status' => 'draft',
             ]),
+            'prospects' => Prospect::whereNotIn('stage', ['lost', 'unqualified'])->latest()->get(),
         ]);
     }
 
@@ -44,6 +47,7 @@ class QuoteController extends Controller
         $data = $this->validatedData($request);
         $data = $this->storeSignature($request, $data);
         $quote = $this->createWithAutomaticNumber($data);
+        $this->recordQuoteStage($request, $quote);
 
         return redirect()->route('admin.quotes.edit', $quote)->with('status', 'Presupuesto creado correctamente.');
     }
@@ -55,7 +59,10 @@ class QuoteController extends Controller
 
     public function edit(Quote $quote): View
     {
-        return view('admin.quotes.edit', compact('quote'));
+        return view('admin.quotes.edit', [
+            'quote' => $quote,
+            'prospects' => Prospect::whereNotIn('stage', ['lost', 'unqualified'])->latest()->get(),
+        ]);
     }
 
     public function update(Request $request, Quote $quote): RedirectResponse
@@ -67,6 +74,7 @@ class QuoteController extends Controller
         $data = $this->validatedData($request, $quote);
         $data = $this->storeSignature($request, $data, $quote);
         $quote->update($data);
+        $this->recordQuoteStage($request, $quote);
 
         return redirect()->route('admin.quotes.edit', $quote)->with('status', 'Presupuesto actualizado correctamente.');
     }
@@ -116,6 +124,7 @@ class QuoteController extends Controller
     private function validatedData(Request $request, ?Quote $quote = null): array
     {
         $validated = $request->validate([
+            'prospect_id' => ['nullable', 'exists:prospects,id'],
             'client_name' => ['required', 'string', 'max:160'],
             'quote_date' => ['required', 'date'],
             'validity_days' => ['required', 'integer', 'min:1', 'max:365'],
@@ -238,5 +247,24 @@ class QuoteController extends Controller
     private function isDuplicateNumber(QueryException $exception): bool
     {
         return in_array((string) $exception->getCode(), ['23000', '23505'], true);
+    }
+
+    private function recordQuoteStage(Request $request, Quote $quote): void
+    {
+        $prospect = $quote->prospect;
+        if (! $prospect || in_array($prospect->stage, ['quote', 'won', 'lost', 'unqualified'], true)) {
+            return;
+        }
+
+        $oldStage = $prospect->stage;
+        $prospect->update(['stage' => 'quote']);
+        $prospect->activities()->create([
+            'user_id' => $request->user()->id,
+            'type' => 'stage_change',
+            'summary' => 'Etapa actualizada al crear el presupuesto '.$quote->number.'.',
+            'old_stage' => $oldStage,
+            'new_stage' => 'quote',
+            'happened_at' => now(),
+        ]);
     }
 }

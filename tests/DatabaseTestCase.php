@@ -10,7 +10,7 @@ abstract class DatabaseTestCase extends TestCase
     {
         parent::setUp();
 
-        if (! in_array('sqlite', PDO::getAvailableDrivers(), true)) {
+        if (config('database.default') === 'sqlite' && ! in_array('sqlite', PDO::getAvailableDrivers(), true)) {
             $this->markTestSkipped('PDO SQLite no está disponible en este servidor.');
         }
 
