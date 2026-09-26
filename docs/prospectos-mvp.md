@@ -8,8 +8,9 @@
 - Los clics a WhatsApp se guardan como eventos anónimos en `whatsapp_clicks`. No crean prospectos ni se presentan como conversaciones.
 - Las UTM se conservan durante la sesión. La fuente del formulario se fija en servidor como `web`; los campos ocultos no deciden la fuente.
 - El formulario está apagado por defecto hasta configurar y probar el correo. El aviso fue aprobado el 25 de septiembre de 2026; el CRM administrativo y la medición de clics no dependen de esta bandera.
-- La notificación implementa tres intentos si se configura una cola asíncrona. Con la infraestructura actual (`QUEUE_CONNECTION=sync`) se intenta después de guardar y cualquier falla queda en el log sin revertir el prospecto.
+- Las notificaciones al administrador y al cliente implementan tres intentos si se configura una cola asíncrona. Con la infraestructura actual (`QUEUE_CONNECTION=sync`) se intentan después de guardar y cualquier falla queda en el log sin revertir el prospecto.
 - Los formularios aceptan proyectos nuevos y solicitudes de soporte o reparación, se asignan a la cuenta `support@sentriq.xytriq.com` y comunican un plazo de primera respuesta de 24 horas hábiles.
+- Después del envío, el visitante llega a `/contacto/gracias`. Si proporcionó correo, recibe además una confirmación con el servicio, la zona y el mismo plazo de respuesta; no se incluyen notas internas.
 - Los prospectos no convertidos se eliminan tres meses después del último contacto. La tarea `prospects:prune` se programa diariamente; los prospectos ganados y aquellos con un presupuesto aceptado o firmado quedan excluidos.
 
 ## Configuración pendiente antes de habilitar el formulario
@@ -21,7 +22,7 @@ SENTRIQ_LEAD_ASSIGNEE_EMAIL=support@sentriq.xytriq.com
 SENTRIQ_LEAD_RETENTION_MONTHS=3
 ```
 
-El aviso de privacidad, el correo `support@sentriq.xytriq.com`, la atención de proyectos y soporte, el responsable y el plazo de respuesta fueron aprobados por Luisangel. La configuración observada en producción usa `MAIL_MAILER=log`, por lo que debe configurarse un transporte de correo real antes de esperar avisos por email. Después de cambiar variables, ejecutar `php artisan config:clear`.
+El aviso de privacidad, el correo `support@sentriq.xytriq.com`, la atención de proyectos y soporte, el responsable y el plazo de respuesta fueron aprobados por Luisangel. En producción, `support` es un alias del buzón existente `soporte` y Laravel usa el SMTP local mediante `smtp://127.0.0.1:25?auto_tls=false`; esto evita depender de `proc_open`, deshabilitado en PHP-FPM. Después de cambiar variables de correo, ejecutar `php artisan config:clear` y comprobar la aceptación del mensaje en el registro de Exim.
 
 ## Despliegue
 
