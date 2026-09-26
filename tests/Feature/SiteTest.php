@@ -33,8 +33,50 @@ class SiteTest extends DatabaseTestCase
             ->assertSee('Protegemos tu espacio con soluciones hechas para ti.')
             ->assertSee('wa.me/523321231570', false)
             ->assertSee('index, follow', false)
+            ->assertSee('<link rel="canonical" href="http://localhost">', false)
             ->assertDontSee('noindex, nofollow', false)
             ->assertDontSee('Deploy now');
+    }
+
+    public function test_robots_allows_public_pages_and_references_sitemap_without_long_term_cache(): void
+    {
+        $response = $this->get('/robots.txt')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->assertSee("User-agent: *\nAllow: /", false)
+            ->assertSee('Disallow: /admin', false)
+            ->assertSee('Sitemap: http://localhost/sitemap.xml', false);
+
+        $this->assertStringContainsString('no-cache', $response->headers->get('Cache-Control'));
+        $this->assertStringContainsString('max-age=0', $response->headers->get('Cache-Control'));
+    }
+
+    public function test_sitemap_contains_every_indexable_public_page_without_long_term_cache(): void
+    {
+        $paths = [
+            '/',
+            '/servicios',
+            ...array_map(
+                fn (string $service): string => '/servicios/'.$service,
+                array_keys(config('sentriq.services')),
+            ),
+            '/nosotros',
+            '/garantias',
+            '/contacto',
+            '/aviso-de-privacidad',
+        ];
+
+        $response = $this->get('/sitemap.xml')
+            ->assertOk()
+            ->assertHeader('Content-Type', 'application/xml; charset=UTF-8');
+
+        foreach ($paths as $path) {
+            $response->assertSee('<loc>http://localhost'.($path === '/' ? '' : $path).'</loc>', false);
+        }
+
+        $this->assertSame(count($paths), substr_count($response->getContent(), '<url>'));
+        $this->assertStringContainsString('no-cache', $response->headers->get('Cache-Control'));
+        $this->assertStringContainsString('max-age=0', $response->headers->get('Cache-Control'));
     }
 
     public function test_unknown_service_returns_not_found(): void

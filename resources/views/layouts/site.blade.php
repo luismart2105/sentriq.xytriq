@@ -10,6 +10,7 @@
 
         <title>@yield('title', 'Sentriq') | Sentriq by Xytriq</title>
 
+        <link rel="canonical" href="{{ url()->current() }}">
         <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon.png') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/site.css') }}?v={{ filemtime(public_path('assets/css/site.css')) }}">
 
@@ -18,6 +19,7 @@
         <meta property="og:title" content="@yield('title', 'Sentriq')">
         <meta property="og:description" content="@yield('description', config('sentriq.brand.slogan'))">
         <meta property="og:image" content="{{ asset('assets/images/hero-home-security.png') }}">
+        <meta property="og:url" content="{{ url()->current() }}">
 
         @php
             $structuredData = [

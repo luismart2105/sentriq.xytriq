@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /opinar/
-Disallow: /presupuesto/
-
-Sitemap: https://sentriq.xytriq.com/sitemap.xml
