@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Prospect;
 use App\Models\User;
 use App\Notifications\NewProspectNotification;
+use App\Notifications\ProspectConfirmationNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,11 @@ class ContactController extends Controller
     public function create(Request $request): View
     {
         return view('contact', ['campaign' => $this->campaignData($request)]);
+    }
+
+    public function thanks(): View
+    {
+        return view('contact-thanks');
     }
 
     public function store(Request $request): RedirectResponse
@@ -73,7 +79,19 @@ class ContactController extends Controller
             ]);
         }
 
-        return redirect()->route('contact')->with('contact_success', 'Recibimos tus datos. Te responderemos dentro de 24 horas hábiles.');
+        if ($prospect->email) {
+            try {
+                Notification::route('mail', $prospect->email)
+                    ->notify(new ProspectConfirmationNotification($prospect));
+            } catch (Throwable $exception) {
+                Log::warning('No se pudo enviar la confirmación al prospecto.', [
+                    'prospect_id' => $prospect->id,
+                    'exception' => $exception->getMessage(),
+                ]);
+            }
+        }
+
+        return redirect()->route('contact.thanks');
     }
 
     private function campaignData(Request $request): array

@@ -35,7 +35,6 @@
             <div class="container lead-form-layout">
                 <div><span class="eyebrow">Solicitud en línea</span><h2>Solicita que te contactemos</h2><p>Atendemos proyectos nuevos, soporte y reparaciones. Te responderemos dentro de 24 horas hábiles.</p><p>El levantamiento técnico, selección de equipos y precio se confirman después de revisar tu solicitud.</p></div>
                 <form class="lead-form" method="POST" action="{{ route('contact.store') }}">@csrf
-                    @if (session('contact_success'))<div class="form-success" role="status">{{ session('contact_success') }}</div>@endif
                     <div class="honeypot" aria-hidden="true"><label>No llenar<input name="website" tabindex="-1" autocomplete="off"></label></div>
                     <label><span>Nombre</span><input name="name" value="{{ old('name') }}" maxlength="160" autocomplete="name" required>@error('name')<em>{{ $message }}</em>@enderror</label>
                     <label><span>Tipo de solicitud</span><select name="request_type" required><option value="">Selecciona una opción</option>@foreach (\App\Models\Prospect::REQUEST_TYPES as $key => $label)<option value="{{ $key }}" @selected(old('request_type') === $key)>{{ $label }}</option>@endforeach</select>@error('request_type')<em>{{ $message }}</em>@enderror</label>

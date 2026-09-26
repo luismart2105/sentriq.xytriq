@@ -7,6 +7,7 @@ use App\Models\Quote;
 use App\Models\User;
 use App\Models\WhatsappClick;
 use App\Notifications\NewProspectNotification;
+use App\Notifications\ProspectConfirmationNotification;
 use Illuminate\Support\Facades\Notification;
 use Tests\DatabaseTestCase;
 
@@ -22,6 +23,7 @@ class ProspectTest extends DatabaseTestCase
             'name' => 'María López',
             'request_type' => 'project',
             'phone' => '33 1234 5678',
+            'email' => 'maria@example.com',
             'service_interest' => 'camaras-de-seguridad',
             'municipality' => 'Zapopan',
             'description' => 'Quiero revisar opciones para un local.',
@@ -32,7 +34,7 @@ class ProspectTest extends DatabaseTestCase
             'referrer' => 'https://facebook.com/post?id=secreto',
         ]);
 
-        $response->assertRedirect('/contacto')->assertSessionHas('contact_success');
+        $response->assertRedirect('/contacto/gracias');
         $this->assertDatabaseCount('prospects', 1);
         $prospect = Prospect::firstOrFail();
         $this->assertSame('web', $prospect->source);
@@ -41,7 +43,21 @@ class ProspectTest extends DatabaseTestCase
         $this->assertSame($responsible->id, $prospect->assigned_user_id);
         $this->assertSame('https://facebook.com/post', $prospect->referrer);
         $this->assertCount(1, $prospect->activities);
-        Notification::assertSentOnDemand(NewProspectNotification::class);
+        Notification::assertSentOnDemand(NewProspectNotification::class, function (NewProspectNotification $notification, array $channels, object $notifiable): bool {
+            return $notifiable->routes['mail'] === 'support@sentriq.xytriq.com';
+        });
+        Notification::assertSentOnDemand(ProspectConfirmationNotification::class, function (ProspectConfirmationNotification $notification, array $channels, object $notifiable): bool {
+            return $notifiable->routes['mail'] === 'maria@example.com';
+        });
+    }
+
+    public function test_confirmation_page_reassures_the_customer_without_being_indexed(): void
+    {
+        $this->get('/contacto/gracias')
+            ->assertOk()
+            ->assertSee('El siguiente paso corre por nuestra cuenta')
+            ->assertSee('Te responderemos dentro de 24 horas hábiles')
+            ->assertSee('noindex, follow', false);
     }
 
     public function test_public_form_validates_contact_consent_and_honeypot(): void

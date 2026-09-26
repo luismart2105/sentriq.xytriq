@@ -28,6 +28,7 @@ Route::get('/servicios/{service}', [ServiceController::class, 'show'])->name('se
 Route::view('/nosotros', 'about')->name('about');
 Route::view('/garantias', 'warranty')->name('warranty');
 Route::get('/contacto', [ContactController::class, 'create'])->name('contact');
+Route::get('/contacto/gracias', [ContactController::class, 'thanks'])->name('contact.thanks');
 Route::post('/contacto', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 Route::view('/aviso-de-privacidad', 'privacy')->name('privacy');
 Route::post('/eventos/whatsapp', [WhatsappClickController::class, 'store'])
