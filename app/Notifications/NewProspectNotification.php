@@ -35,6 +35,7 @@ class NewProspectNotification extends Notification implements ShouldQueue
             ->subject('Nuevo prospecto: '.$this->prospect->displayName())
             ->greeting('Nuevo formulario de contacto')
             ->line($this->prospect->displayName().' solicitó información desde el sitio.')
+            ->line('Solicitud: '.(Prospect::REQUEST_TYPES[$this->prospect->request_type] ?? $this->prospect->request_type))
             ->line('Servicio: '.(config('sentriq.services.'.$this->prospect->service_interest.'.name') ?? 'Sin especificar'))
             ->line('Zona: '.($this->prospect->municipality ?: 'Sin especificar'))
             ->action('Revisar prospecto', route('admin.prospects.show', $this->prospect));

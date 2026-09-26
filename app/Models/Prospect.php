@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Prospect extends Model
 {
+    public const REQUEST_TYPES = [
+        'project' => 'Proyecto nuevo',
+        'support' => 'Soporte o reparación',
+    ];
+
     public const STAGES = [
         'new' => 'Nuevo',
         'contacted' => 'Contactado',
@@ -38,7 +43,7 @@ class Prospect extends Model
     ];
 
     protected $fillable = [
-        'name', 'business', 'phone', 'email', 'service_interest', 'municipality', 'description',
+        'name', 'business', 'request_type', 'phone', 'email', 'service_interest', 'municipality', 'description',
         'source', 'campaign', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
         'landing_page', 'referrer', 'stage', 'assigned_user_id', 'next_follow_up_at', 'last_contact_at',
     ];

@@ -17,13 +17,17 @@ return [
     ],
 
     'leads' => [
-        // Activar solamente después de que Luisangel apruebe el aviso de privacidad.
+        // Activar solamente después de configurar y probar el correo en producción.
         'form_enabled' => (bool) env('SENTRIQ_LEAD_FORM_ENABLED', false),
-        'notification_email' => env('SENTRIQ_LEAD_NOTIFICATION_EMAIL', env('MAIL_FROM_ADDRESS')),
+        'notification_email' => env('SENTRIQ_LEAD_NOTIFICATION_EMAIL', 'support@sentriq.xytriq.com'),
+        'default_assignee_email' => env('SENTRIQ_LEAD_ASSIGNEE_EMAIL', 'support@sentriq.xytriq.com'),
+        'retention_months' => (int) env('SENTRIQ_LEAD_RETENTION_MONTHS', 3),
+        'first_response_hours' => 24,
     ],
 
     'privacy' => [
         'responsible_name' => 'Luisangel Alfonso Martinez Hernandez',
+        'responsible_address' => 'Circuito Noe #793, Jardines del Eden, C.P. 45654, Tlajomulco de Zúñiga, Jalisco, México',
     ],
 
     'coverage' => [

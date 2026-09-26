@@ -16,9 +16,11 @@ class ProspectTest extends DatabaseTestCase
     {
         config()->set('sentriq.leads.form_enabled', true);
         Notification::fake();
+        $responsible = User::factory()->create(['email' => 'support@sentriq.xytriq.com']);
 
         $response = $this->post('/contacto', [
             'name' => 'María López',
+            'request_type' => 'project',
             'phone' => '33 1234 5678',
             'service_interest' => 'camaras-de-seguridad',
             'municipality' => 'Zapopan',
@@ -35,6 +37,8 @@ class ProspectTest extends DatabaseTestCase
         $prospect = Prospect::firstOrFail();
         $this->assertSame('web', $prospect->source);
         $this->assertSame('new', $prospect->stage);
+        $this->assertSame('project', $prospect->request_type);
+        $this->assertSame($responsible->id, $prospect->assigned_user_id);
         $this->assertSame('https://facebook.com/post', $prospect->referrer);
         $this->assertCount(1, $prospect->activities);
         Notification::assertSentOnDemand(NewProspectNotification::class);
@@ -46,6 +50,7 @@ class ProspectTest extends DatabaseTestCase
 
         $this->from('/contacto')->post('/contacto', [
             'name' => 'Robot', 'service_interest' => 'alarmas', 'municipality' => 'Guadalajara',
+            'request_type' => 'support',
             'description' => 'Mensaje', 'website' => 'spam.example',
         ])->assertRedirect('/contacto')->assertSessionHasErrors(['phone', 'privacy_accepted', 'website']);
 
@@ -70,13 +75,13 @@ class ProspectTest extends DatabaseTestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user)->post('/admin/prospectos', [
-            'name' => 'Taller Norte', 'phone' => '3312345678', 'source' => 'whatsapp', 'stage' => 'new',
+            'name' => 'Taller Norte', 'phone' => '3312345678', 'source' => 'whatsapp', 'stage' => 'new', 'request_type' => 'support',
             'service_interest' => 'alarmas',
         ])->assertRedirect();
 
         $prospect = Prospect::firstOrFail();
         $this->actingAs($user)->put(route('admin.prospects.update', $prospect), [
-            'name' => 'Taller Norte', 'phone' => '3312345678', 'source' => 'whatsapp', 'stage' => 'contacted',
+            'name' => 'Taller Norte', 'phone' => '3312345678', 'source' => 'whatsapp', 'stage' => 'contacted', 'request_type' => 'support',
             'service_interest' => 'alarmas',
         ])->assertRedirect(route('admin.prospects.show', $prospect));
 
@@ -121,5 +126,20 @@ class ProspectTest extends DatabaseTestCase
 
         $this->assertSame(1, WhatsappClick::count());
         $this->assertSame(0, Prospect::count());
+    }
+
+    public function test_expired_unconverted_prospects_are_deleted_after_three_months(): void
+    {
+        $expired = Prospect::create(['name' => 'Antiguo', 'phone' => '3311111111', 'source' => 'web', 'stage' => 'lost']);
+        $expired->forceFill(['created_at' => now()->subMonths(4), 'updated_at' => now()->subMonths(4)])->saveQuietly();
+        $customer = Prospect::create(['name' => 'Cliente', 'phone' => '3322222222', 'source' => 'web', 'stage' => 'won']);
+        $customer->forceFill(['created_at' => now()->subMonths(4), 'updated_at' => now()->subMonths(4)])->saveQuietly();
+        Prospect::create(['name' => 'Reciente', 'phone' => '3333333333', 'source' => 'web', 'stage' => 'new']);
+
+        $this->artisan('prospects:prune')->assertSuccessful();
+
+        $this->assertModelMissing($expired);
+        $this->assertModelExists($customer);
+        $this->assertDatabaseHas('prospects', ['name' => 'Reciente']);
     }
 }

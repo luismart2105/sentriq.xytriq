@@ -1,6 +1,7 @@
 <div class="admin-form-grid">
     <label><span>Nombre</span><input name="name" value="{{ old('name', $prospect->name) }}" maxlength="160">@error('name')<em>{{ $message }}</em>@enderror</label>
     <label><span>Negocio</span><input name="business" value="{{ old('business', $prospect->business) }}" maxlength="160">@error('business')<em>{{ $message }}</em>@enderror</label>
+    <label><span>Tipo de solicitud</span><select name="request_type" required>@foreach (\App\Models\Prospect::REQUEST_TYPES as $key => $label)<option value="{{ $key }}" @selected(old('request_type', $prospect->request_type ?: 'project') === $key)>{{ $label }}</option>@endforeach</select></label>
     <label><span>Teléfono</span><input name="phone" value="{{ old('phone', $prospect->phone) }}" maxlength="40">@error('phone')<em>{{ $message }}</em>@enderror</label>
     <label><span>Correo</span><input type="email" name="email" value="{{ old('email', $prospect->email) }}">@error('email')<em>{{ $message }}</em>@enderror</label>
     <label><span>Servicio</span><select name="service_interest"><option value="">Por definir</option>@foreach (config('sentriq.services') as $key => $service)<option value="{{ $key }}" @selected(old('service_interest', $prospect->service_interest) === $key)>{{ $service['name'] }}</option>@endforeach</select></label>

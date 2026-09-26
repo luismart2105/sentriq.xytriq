@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('business')->nullable();
+            $table->string('request_type', 40)->default('project')->index();
             $table->string('phone', 40)->nullable()->index();
             $table->string('email')->nullable()->index();
             $table->string('service_interest')->nullable()->index();

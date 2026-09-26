@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Prospect;
+use App\Models\User;
 use App\Notifications\NewProspectNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class ContactController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:160'],
+            'request_type' => ['required', Rule::in(array_keys(Prospect::REQUEST_TYPES))],
             'phone' => ['nullable', 'required_without:email', 'string', 'max:40'],
             'email' => ['nullable', 'required_without:phone', 'email:rfc', 'max:255'],
             'service_interest' => ['required', Rule::in(array_keys(config('sentriq.services')))],
@@ -50,6 +52,7 @@ class ContactController extends Controller
                 'source' => 'web',
                 'campaign' => $data['utm_campaign'] ?? null,
                 'stage' => 'new',
+                'assigned_user_id' => User::where('email', config('sentriq.leads.default_assignee_email'))->value('id'),
             ]);
             $prospect->activities()->create([
                 'type' => 'note',
@@ -70,7 +73,7 @@ class ContactController extends Controller
             ]);
         }
 
-        return redirect()->route('contact')->with('contact_success', 'Recibimos tus datos. Te contactaremos para conocer mejor tu proyecto.');
+        return redirect()->route('contact')->with('contact_success', 'Recibimos tus datos. Te responderemos dentro de 24 horas hábiles.');
     }
 
     private function campaignData(Request $request): array

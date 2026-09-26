@@ -135,6 +135,7 @@ class ProspectController extends Controller
         $data = $request->validate([
             'name' => ['nullable', 'required_without:business', 'string', 'max:160'],
             'business' => ['nullable', 'required_without:name', 'string', 'max:160'],
+            'request_type' => ['required', Rule::in(array_keys(Prospect::REQUEST_TYPES))],
             'phone' => ['nullable', 'required_without:email', 'string', 'max:40'],
             'email' => ['nullable', 'email:rfc', 'max:255'],
             'service_interest' => ['nullable', Rule::in(array_keys(config('sentriq.services')))],
