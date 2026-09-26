@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\ClientQuoteSignatureController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MailDiscoveryController;
 use App\Http\Controllers\ReviewSubmissionController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\ServiceController;
@@ -21,6 +22,9 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/.well-known/autoconfig/mail/config-v1.1.xml', [MailDiscoveryController::class, 'autoconfig'])->name('mail.autoconfig.well-known');
+Route::get('/mail/config-v1.1.xml', [MailDiscoveryController::class, 'autoconfig'])->name('mail.autoconfig');
+Route::match(['GET', 'POST'], '/autodiscover/autodiscover.xml', [MailDiscoveryController::class, 'autodiscover'])->name('mail.autodiscover');
 
 Route::get('/servicios', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/servicios/{service}', [ServiceController::class, 'show'])->name('services.show');

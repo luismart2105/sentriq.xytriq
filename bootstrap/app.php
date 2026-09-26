@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [CaptureCampaign::class]);
+        $middleware->preventRequestForgery(except: ['autodiscover/autodiscover.xml']);
         $middleware->redirectGuestsTo(fn (Request $request) => route('admin.login'));
         $middleware->redirectUsersTo(fn (Request $request) => route('admin.dashboard'));
     })

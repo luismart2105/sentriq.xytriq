@@ -16,6 +16,11 @@ return [
         'hours' => 'Lunes a sábado, de 10:00 a. m. a 8:00 p. m.',
     ],
 
+    'mail' => [
+        'domain' => 'sentriq.xytriq.com',
+        'host' => 'mail.sentriq.xytriq.com',
+    ],
+
     'leads' => [
         // Activar solamente después de configurar y probar el correo en producción.
         'form_enabled' => (bool) env('SENTRIQ_LEAD_FORM_ENABLED', false),
