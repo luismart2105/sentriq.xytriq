@@ -22,7 +22,7 @@ SENTRIQ_LEAD_ASSIGNEE_EMAIL=support@sentriq.xytriq.com
 SENTRIQ_LEAD_RETENTION_MONTHS=3
 ```
 
-El aviso de privacidad, el correo `support@sentriq.xytriq.com`, la atención de proyectos y soporte, el responsable y el plazo de respuesta fueron aprobados por Luisangel. En producción, `support` es un alias del buzón existente `soporte` y Laravel usa el SMTP local mediante `smtp://127.0.0.1:25?auto_tls=false`; esto evita depender de `proc_open`, deshabilitado en PHP-FPM. Después de cambiar variables de correo, ejecutar `php artisan config:clear` y comprobar la aceptación del mensaje en el registro de Exim.
+El aviso de privacidad, el correo `support@sentriq.xytriq.com`, la atención de proyectos y soporte, el responsable y el plazo de respuesta fueron aprobados por Luisangel. En producción, `support` es un buzón propio y Laravel usa el SMTP local mediante `smtp://127.0.0.1:25?auto_tls=false`; esto evita depender de `proc_open`, deshabilitado en PHP-FPM. Después de cambiar variables de correo, ejecutar `php artisan config:clear` y comprobar la aceptación del mensaje en el registro de Exim.
 
 ## Despliegue
 
