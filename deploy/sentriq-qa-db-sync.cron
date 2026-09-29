@@ -1,0 +1,6 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+MAILTO=""
+
+# Refresh the QA database daily from the current production database.
+15 3 * * * root /usr/local/sbin/sentriq-qa-db-sync >/dev/null 2>&1
