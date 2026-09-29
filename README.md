@@ -4,6 +4,8 @@ Sitio público, administración de catálogo, reseñas, presupuestos y seguimien
 
 La configuración y verificación del MVP de prospectos está documentada en [`docs/prospectos-mvp.md`](docs/prospectos-mvp.md).
 
+Para ejecutar una instancia local de QA desde una laptop conectada a la base QA del VPS, consulta [`docs/qa-local-en-laptop.md`](docs/qa-local-en-laptop.md). La configuración de las bases y su sincronización diaria está en [`docs/bases-hestia.md`](docs/bases-hestia.md).
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

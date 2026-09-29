@@ -5,7 +5,7 @@ La aplicación de producción se conecta por Laravel a MySQL en `127.0.0.1`. En 
 - Producción: `zauryx_sentriq_prod`
 - QA: `zauryx_sentriq_qa`
 
-Las contraseñas no se guardan en Git. La aplicación productiva obtiene sus valores de `.env`. Las credenciales para conectar una futura aplicación QA están en `/root/.config/sentriq/qa-db.env` con permisos restringidos.
+Las contraseñas no se guardan en Git. La aplicación productiva obtiene sus valores de `.env`. Las credenciales de QA están en `/root/.config/sentriq/qa-db.env` en el VPS, con permisos restringidos. La aplicación local de una laptop puede conectarse a QA por el host público `104.254.246.40`, puerto `3306`; los pasos están en [`qa-local-en-laptop.md`](qa-local-en-laptop.md).
 
 ## Sincronización diaria de QA
 
@@ -20,4 +20,4 @@ install -o root -g root -m 700 scripts/sync-qa-database.sh /usr/local/sbin/sentr
 install -o root -g root -m 644 deploy/sentriq-qa-db-sync.cron /etc/cron.d/sentriq-qa-db-sync
 ```
 
-La programación solamente sincroniza la base; no despliega ni crea un sitio QA. La conexión de producción permanece en `.env` y no se modifica por esta tarea.
+La programación solamente sincroniza la base; no despliega ni crea un sitio QA. La conexión de producción permanece en `.env` y no se modifica por esta tarea. Cualquier cambio o registro hecho desde la aplicación local en la base QA se puede perder al sincronizarse con producción.
