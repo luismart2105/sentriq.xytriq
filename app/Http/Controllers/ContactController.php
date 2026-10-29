@@ -31,10 +31,15 @@ class ContactController extends Controller
     {
         abort_unless(config('sentriq.leads.form_enabled'), 404);
 
+        $phone = $request->input('phone');
+        if (is_string($phone)) {
+            $request->merge(['phone' => preg_replace('/[\s().-]+/u', '', $phone)]);
+        }
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:160'],
             'request_type' => ['required', Rule::in(array_keys(Prospect::REQUEST_TYPES))],
-            'phone' => ['nullable', 'required_without:email', 'string', 'max:40'],
+            'phone' => ['nullable', 'required_without:email', 'string', 'regex:/^[0-9]{10}$/'],
             'email' => ['nullable', 'required_without:phone', 'email:rfc', 'max:255'],
             'service_interest' => ['required', Rule::in(array_keys(config('sentriq.services')))],
             'municipality' => ['required', 'string', 'max:120'],
