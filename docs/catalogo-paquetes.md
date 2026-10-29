@@ -10,7 +10,9 @@ php artisan storage:link
 php artisan db:seed --class=IntroductionKitsSeeder --force
 ```
 
-El importador crea únicamente los slugs que faltan. Ejecutarlo de nuevo no duplica ni sobrescribe las modificaciones del administrador. No usar `migrate:fresh` en una base con datos. El script actual de despliegue solo actualiza Git: estos comandos deben ejecutarse también en el servidor antes de servir las nuevas vistas. Resguardar primero la base de datos del entorno.
+El importador crea únicamente los slugs que faltan. Ejecutarlo de nuevo no duplica ni sobrescribe las modificaciones del administrador. No usar `migrate:fresh` en una base con datos. El despliegue automático solo actualiza Git, no ejecuta migraciones ni seeders; estos comandos se requieren en un entorno nuevo o cuando un cambio de esquema o catálogo lo amerite. Resguardar primero la base de datos del entorno.
+
+Producción fue comprobada el 29 de octubre de 2026: la página pública de cámaras muestra los paquetes Sentriq Hogar (4 cámaras), Sentriq Negocio (6) y Sentriq Cobertura (8).
 
 Las fotos iniciales están versionadas en `public/assets/images/kits`. Las nuevas cargas del administrador van a `storage/app/public/kits` y se sirven mediante `public/storage`. Respaldar esa carpeta además de la base. Al reemplazar o quitar una foto se conserva el archivo anterior para evitar pérdidas; ya no se referencia desde el catálogo.
 
@@ -25,6 +27,10 @@ Las fotos iniciales están versionadas en `public/assets/images/kits`. Las nueva
 Todos incluyen HDD de 1 TB agregado al kit base, grabación 1080p Lite, una caja LP-WBX-80 por cámara, alimentación, fijaciones, configuración y pruebas. El DVR queda fuera del gabinete. Instalación aparente; canalizaciones, obra civil y trabajos especiales se cotizan aparte. Traslado: hasta 100 km totales, no radio de 100 km. No se añadió una fecha de vencimiento ni se inventó un descuento sobre un precio anterior.
 
 Revisar existencias, costos finales e impuestos de la cotización antes de vender. Los precios de introducción fueron fijados por el propietario; no constituyen una validación de margen. La capacidad de 1 TB no implica una cantidad fija de días de grabación.
+
+## Validación comercial pendiente
+
+Antes de impulsar estos paquetes con publicidad o comprometer una fecha, calcular el costo completo por paquete: equipos y consumibles, horas de instalación, traslados, trabajos adicionales previsibles, impuestos y comisiones de recomendación si se acuerdan. El repositorio no contiene los costos de compra ni las horas reales, por lo que todavía no permite calcular margen o rentabilidad.
 
 ## Fotografías reales y fuentes
 

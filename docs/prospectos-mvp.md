@@ -13,7 +13,7 @@
 - Después del envío, el visitante llega a `/contacto/gracias`. Si proporcionó correo, recibe además una confirmación con el servicio, la zona y el mismo plazo de respuesta; no se incluyen notas internas.
 - Los prospectos no convertidos se eliminan tres meses después del último contacto. La tarea `prospects:prune` se programa diariamente; los prospectos ganados y aquellos con un presupuesto aceptado o firmado quedan excluidos.
 
-## Configuración pendiente antes de habilitar el formulario
+## Configuración del formulario y estado en producción
 
 ```dotenv
 SENTRIQ_LEAD_FORM_ENABLED=false
@@ -22,11 +22,13 @@ SENTRIQ_LEAD_ASSIGNEE_EMAIL=support@sentriq.xytriq.com
 SENTRIQ_LEAD_RETENTION_MONTHS=3
 ```
 
-El aviso de privacidad, el correo `support@sentriq.xytriq.com`, la atención de proyectos y soporte, el responsable y el plazo de respuesta fueron aprobados por Luisangel. En producción, `support` es un buzón propio y Laravel usa el SMTP local mediante `smtp://127.0.0.1:25?auto_tls=false`; esto evita depender de `proc_open`, deshabilitado en PHP-FPM. Después de cambiar variables de correo, ejecutar `php artisan config:clear` y comprobar la aceptación del mensaje en el registro de Exim.
+`SENTRIQ_LEAD_FORM_ENABLED=false` es el valor seguro por defecto para entornos nuevos; no describe el estado de producción. El propietario confirmó un envío exitoso desde el formulario de producción el 29 de octubre de 2026. El servidor aplica actualizaciones de `main` automáticamente cada dos minutos.
+
+El aviso de privacidad, el correo `support@sentriq.xytriq.com`, la atención de proyectos y soporte, el responsable y el plazo de respuesta fueron aprobados por Luisangel. En producción, `support` es un buzón propio y Laravel usa el SMTP local mediante `smtp://127.0.0.1:25?auto_tls=false`; esto evita depender de `proc_open`, deshabilitado en PHP-FPM. El envío exitoso confirma que el flujo web responde, pero no confirma por sí solo la entrega de los correos. Después de cambiar variables de correo, ejecutar `php artisan config:clear` y comprobar la aceptación del mensaje en el registro de Exim.
 
 ## Despliegue
 
-El cron actual solamente hace un avance rápido de `origin/main`; no ejecuta migraciones. Coordinar el merge y aplicar estos pasos en la copia de producción antes de verificar el panel:
+El despliegue automático hace un avance rápido de `origin/main`; no ejecuta migraciones ni seeders. El propietario confirmó que producción recoge los cambios de `main` cada dos minutos. La página pública de cámaras muestra los tres paquetes del catálogo. Ejecutar los siguientes pasos al introducir cambios de esquema o preparar un entorno nuevo; no usar `migrate:fresh` en una base con datos:
 
 ```bash
 cd /home/zauryx/web/sentriq.xytriq.com/public_html
@@ -36,14 +38,17 @@ php artisan migrate:status
 php artisan prospects:prune --dry-run
 ```
 
-No activar todavía `SENTRIQ_LEAD_FORM_ENABLED`. Primero comprobar:
+## Verificación operativa pendiente
 
-1. `/admin/prospectos` y `/admin/prospectos/hoy` requieren sesión y cargan sin errores.
-2. Crear manualmente un prospecto de prueba, cambiar su etapa, agregar una actividad y programar seguimiento.
+El envío público del formulario fue confirmado por el propietario en producción el 29 de octubre de 2026. La página de cámaras y los paquetes de 4, 6 y 8 cámaras también se comprobaron públicamente. Aún falta comprobar:
+
+1. Confirmar en una sesión administrativa que el envío reciente aparece en `/admin/prospectos` y que `/admin/prospectos/hoy` carga sin errores.
+2. Crear manualmente un prospecto, cambiar su etapa, agregar una actividad y programar seguimiento.
 3. Crear un presupuesto relacionado y confirmar que la ficha pasa a Cotización.
-4. Abrir un enlace de WhatsApp y confirmar un registro en `whatsapp_clicks`, separado de `prospects`.
-5. Configurar y probar el correo. Después cambiar `SENTRIQ_LEAD_FORM_ENABLED=true`, limpiar configuración y enviar un formulario de proyecto y otro de soporte.
-6. Confirmar que portada, servicios, `robots.txt`, `sitemap.xml`, firma de presupuestos y reseñas siguen disponibles.
+4. Abrir un enlace de WhatsApp y confirmar un registro en `whatsapp_clicks`, separado de `prospects`. Las conversaciones reales de WhatsApp deben registrarse manualmente como prospectos.
+5. Confirmar la entrega del aviso a `support@sentriq.xytriq.com` y del correo de confirmación al cliente. La activación del formulario ya no está pendiente.
+6. Confirmar la instalación del cron del servidor para `schedule:run` y que la retención de prospectos funciona.
+7. Confirmar que portada, servicios, `robots.txt`, `sitemap.xml`, firma de presupuestos y reseñas siguen disponibles.
 
 Para que la retención se aplique automáticamente, verificar que el programador de Laravel se ejecute cada minuto en el servidor:
 
