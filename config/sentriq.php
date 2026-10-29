@@ -13,7 +13,7 @@ return [
         'whatsapp_url' => 'https://wa.me/523321231570?text=Hola%20Sentriq%2C%20me%20gustar%C3%ADa%20recibir%20asesor%C3%ADa%20para%20un%20proyecto%20de%20seguridad.',
         'email' => 'support@sentriq.xytriq.com',
         'facebook' => 'https://www.facebook.com/sentriq.xytriq',
-        'hours' => 'Lunes a sábado, de 10:00 a. m. a 8:00 p. m.',
+        'hours' => 'Lunes a viernes, de 8:00 a. m. a 7:00 p. m.; sábado, de 9:00 a. m. a 2:00 p. m.; domingo, cerrado.',
     ],
 
     'mail' => [

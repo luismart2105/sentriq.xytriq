@@ -32,7 +32,7 @@
                 'email' => config('sentriq.contact.email'),
                 'url' => url('/'),
                 'sameAs' => [config('sentriq.contact.facebook')],
-                'openingHours' => 'Mo-Sa 10:00-20:00',
+                'openingHours' => ['Mo-Fr 08:00-19:00', 'Sa 09:00-14:00'],
             ];
         @endphp
         <script type="application/ld+json">
