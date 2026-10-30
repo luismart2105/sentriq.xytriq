@@ -1388,7 +1388,11 @@ p {
     background: transparent;
     transition: transform 220ms ease;
 }
-.kit-card__media figure:only-child img { height: 17rem; }
+.kit-card__media figure:only-child img {
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
 .kit-card__media figure:hover img { transform: scale(1.025); }
 .kit-card__media figcaption { font-size: 0.7rem; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
 .kit-card__price-label { color: var(--blue-600); font-size: 0.8rem; font-weight: 700; margin-top: 0.3rem; }
