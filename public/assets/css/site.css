@@ -1395,11 +1395,9 @@ p {
 }
 
 .kit-card__tag {
-    position: absolute;
-    top: 0.75rem;
-    left: 1rem;
+    position: static;
     align-self: flex-start;
-    margin: 0;
+    margin: 0 0 0.75rem;
     padding: 0.35rem 0.6rem;
     color: var(--blue-600);
     border-radius: 999px;
