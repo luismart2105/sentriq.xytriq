@@ -1370,8 +1370,26 @@ p {
     margin-bottom: 1.5rem;
 }
 
-.kit-card__media figure { margin: 0; min-width: 0; }
-.kit-card__media img { display: block; width: 100%; height: 11rem; object-fit: contain; background: white; }
+.kit-card__media figure {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(145deg, #fff, #eef3fa);
+    box-shadow: 0 0.65rem 1.5rem rgba(15, 35, 65, 0.1);
+}
+.kit-card__media figure:only-child { grid-column: 1 / -1; }
+.kit-card__media img {
+    display: block;
+    width: 100%;
+    height: 11rem;
+    object-fit: contain;
+    background: transparent;
+    transition: transform 220ms ease;
+}
+.kit-card__media figure:only-child img { height: 17rem; }
+.kit-card__media figure:hover img { transform: scale(1.025); }
 .kit-card__media figcaption { font-size: 0.7rem; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
 .kit-card__price-label { color: var(--blue-600); font-size: 0.8rem; font-weight: 700; margin-top: 0.3rem; }
 .kit-card__conditions { margin: 0 0 1.5rem; border-top: 1px solid var(--line); padding-top: 1rem; font-size: 0.8rem; }
