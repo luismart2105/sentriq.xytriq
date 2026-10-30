@@ -15,39 +15,46 @@ class KitController extends Controller
     public function index(): View
     {
         return view('admin.kits.index', [
-            'kits' => Kit::orderBy('sort_order')->orderBy('price')->get(),
+            'kits' => Kit::orderBy('service_slug')->orderBy('sort_order')->orderBy('price')->get(),
+            'services' => config('sentriq.services'),
         ]);
     }
 
     public function create(): View
     {
-        return view('admin.kits.create', ['kit' => new Kit]);
+        return view('admin.kits.create', [
+            'kit' => new Kit,
+            'services' => config('sentriq.services'),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         Kit::create($this->validatedData($request));
 
-        return redirect()->route('admin.kits.index')->with('status', 'Kit creado correctamente.');
+        return redirect()->route('admin.kits.index')->with('status', 'Paquete o solución creado correctamente.');
     }
 
     public function edit(Kit $kit): View
     {
-        return view('admin.kits.edit', compact('kit'));
+        return view('admin.kits.edit', [
+            'kit' => $kit,
+            'services' => config('sentriq.services'),
+        ]);
     }
 
     public function update(Request $request, Kit $kit): RedirectResponse
     {
         $kit->update($this->validatedData($request, $kit));
 
-        return redirect()->route('admin.kits.index')->with('status', 'Kit actualizado correctamente.');
+        return redirect()->route('admin.kits.index')->with('status', 'Paquete o solución actualizado correctamente.');
     }
 
     public function destroy(Kit $kit): RedirectResponse
     {
         $kit->delete();
 
-        return redirect()->route('admin.kits.index')->with('status', 'Kit eliminado.');
+        return redirect()->route('admin.kits.index')->with('status', 'Paquete o solución eliminado.');
     }
 
     private function validatedData(Request $request, ?Kit $kit = null): array
@@ -57,6 +64,7 @@ class KitController extends Controller
         ]);
 
         $validated = $request->validate([
+            'service_slug' => ['required', 'string', Rule::in(array_keys(config('sentriq.services')))],
             'name' => ['required', 'string', 'max:120'],
             'slug' => [
                 'required',
@@ -65,7 +73,8 @@ class KitController extends Controller
                 Rule::unique('kits', 'slug')->ignore($kit?->id),
             ],
             'camera_count' => ['nullable', 'integer', 'min:1', 'max:64'],
-            'price' => ['required', 'numeric', 'min:0', 'max:99999999'],
+            'pricing_type' => ['required', Rule::in(['fixed', 'from', 'quote'])],
+            'price' => ['nullable', 'required_unless:pricing_type,quote', 'numeric', 'min:0', 'max:99999999'],
             'description' => ['nullable', 'string', 'max:1000'],
             'price_label' => ['nullable', 'string', 'max:80'],
             'conditions' => ['nullable', 'string', 'max:4000'],
@@ -86,11 +95,14 @@ class KitController extends Controller
             ->all();
 
         $data = [
-            'service_slug' => 'camaras-de-seguridad',
+            'service_slug' => $validated['service_slug'],
+            'pricing_type' => $validated['pricing_type'],
             'name' => $validated['name'],
             'slug' => $validated['slug'],
-            'camera_count' => $validated['camera_count'] ?? null,
-            'price' => $validated['price'],
+            'camera_count' => $validated['service_slug'] === 'camaras-de-seguridad'
+                ? ($validated['camera_count'] ?? null)
+                : null,
+            'price' => $validated['pricing_type'] === 'quote' ? null : $validated['price'],
             'description' => $validated['description'] ?? null,
             'price_label' => $validated['price_label'] ?? null,
             'conditions' => $validated['conditions'] ?? null,

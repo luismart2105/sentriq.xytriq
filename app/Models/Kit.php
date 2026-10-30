@@ -9,6 +9,7 @@ class Kit extends Model
 {
     protected $fillable = [
         'service_slug',
+        'pricing_type',
         'name',
         'slug',
         'camera_count',

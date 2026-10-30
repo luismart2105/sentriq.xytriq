@@ -1,10 +1,21 @@
 @php
     $featuresText = old('features_text', implode(PHP_EOL, $kit->features ?? []));
+    $selectedService = old('service_slug', $kit->service_slug ?: 'camaras-de-seguridad');
+    $pricingType = old('pricing_type', $kit->pricing_type ?: 'fixed');
 @endphp
 
 <div class="admin-form-grid">
     <label>
-        <span>Nombre del kit</span>
+        <span>Servicio</span>
+        <select name="service_slug" id="offering-service" required>
+            @foreach ($services as $serviceSlug => $service)
+                <option value="{{ $serviceSlug }}" @selected($selectedService === $serviceSlug)>{{ $service['name'] }}</option>
+            @endforeach
+        </select>
+        @error('service_slug') <em>{{ $message }}</em> @enderror
+    </label>
+    <label>
+        <span>Nombre del paquete o solución</span>
         <input type="text" name="name" value="{{ old('name', $kit->name) }}" placeholder="Ej. Kit residencial de 4 cámaras" required>
         @error('name') <em>{{ $message }}</em> @enderror
     </label>
@@ -13,14 +24,23 @@
         <input type="text" name="slug" value="{{ old('slug', $kit->slug) }}" placeholder="Se genera desde el nombre">
         @error('slug') <em>{{ $message }}</em> @enderror
     </label>
-    <label>
-        <span>Número de cámaras</span>
+    <label id="camera-count-field" @if ($selectedService !== 'camaras-de-seguridad') hidden @endif>
+        <span>Número de cámaras <small>(solo para videovigilancia)</small></span>
         <input type="number" name="camera_count" value="{{ old('camera_count', $kit->camera_count) }}" min="1" max="64">
         @error('camera_count') <em>{{ $message }}</em> @enderror
     </label>
     <label>
+        <span>Tipo de precio</span>
+        <select name="pricing_type" id="offering-pricing-type" required>
+            <option value="fixed" @selected($pricingType === 'fixed')>Precio fijo</option>
+            <option value="from" @selected($pricingType === 'from')>Precio desde</option>
+            <option value="quote" @selected($pricingType === 'quote')>Requiere cotización</option>
+        </select>
+        @error('pricing_type') <em>{{ $message }}</em> @enderror
+    </label>
+    <label id="offering-price-field" @if ($pricingType === 'quote') hidden @endif>
         <span>Precio MXN</span>
-        <input type="number" name="price" value="{{ old('price', $kit->price) }}" min="0" step="0.01" required>
+        <input type="number" name="price" value="{{ old('price', $kit->price) }}" min="0" step="0.01" @if ($pricingType !== 'quote') required @endif>
         @error('price') <em>{{ $message }}</em> @enderror
     </label>
     <label class="admin-form-full">
@@ -33,7 +53,7 @@
         <input type="text" name="price_label" maxlength="80" value="{{ old('price_label', $kit->price_label) }}" placeholder="Precio de introducción">
         @error('price_label') <em>{{ $message }}</em> @enderror
     </label>
-    @foreach (['image' => 'Cámaras o kit', 'cabinet_image' => 'Gabinete incluido'] as $field => $label)
+    @foreach (['image' => 'Imagen principal', 'cabinet_image' => 'Imagen adicional'] as $field => $label)
         <div class="kit-media-editor">
             @if ($kit->imageUrl($field.'_path'))
                 <img src="{{ $kit->imageUrl($field.'_path') }}" alt="{{ $kit->getAttribute($field.'_caption') ?: $label }}" width="240" height="180">
@@ -44,7 +64,7 @@
                 @error($field) <em>{{ $message }}</em> @enderror
             </label>
             <label>
-                <span>Descripción de la foto / modelo</span>
+                <span>Descripción de la imagen / modelo</span>
                 <input type="text" name="{{ $field }}_caption" maxlength="255" value="{{ old($field.'_caption', $kit->getAttribute($field.'_caption')) }}">
                 @error($field.'_caption') <em>{{ $message }}</em> @enderror
             </label>
@@ -74,6 +94,8 @@
 </div>
 
 <div class="form-actions">
-    <button class="admin-button" type="submit">Guardar kit</button>
+    <button class="admin-button" type="submit">Guardar paquete o solución</button>
     <a href="{{ route('admin.kits.index') }}">Cancelar</a>
 </div>
+
+<script src="{{ asset('assets/js/admin-offerings.js') }}" defer></script>

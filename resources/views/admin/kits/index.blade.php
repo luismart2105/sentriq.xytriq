@@ -1,21 +1,28 @@
 @extends('admin.layout')
 
-@section('title', 'Kits')
+@section('title', 'Paquetes y soluciones')
 
 @section('content')
     <div class="admin-heading">
-        <div><span>Catálogo</span><h1>Kits de cámaras</h1></div>
-        <a class="admin-button" href="{{ route('admin.kits.create') }}">Nuevo kit</a>
+        <div><span>Catálogo</span><h1>Paquetes y soluciones</h1></div>
+        <a class="admin-button" href="{{ route('admin.kits.create') }}">Nueva opción</a>
     </div>
 
     <div class="admin-table-wrap">
         <table class="admin-table">
-            <thead><tr><th>Kit</th><th>Precio</th><th>Estado</th><th>Orden</th><th></th></tr></thead>
+            <thead><tr><th>Opción</th><th>Servicio</th><th>Precio</th><th>Estado</th><th>Orden</th><th></th></tr></thead>
             <tbody>
                 @forelse ($kits as $kit)
                     <tr>
-                        <td><strong>{{ $kit->name }}</strong><small>{{ $kit->camera_count ? $kit->camera_count.' cámaras' : 'Personalizado' }}</small></td>
-                        <td>${{ number_format((float) $kit->price, 2) }}</td>
+                        <td><strong>{{ $kit->name }}</strong><small>{{ $kit->camera_count ? $kit->camera_count.' cámaras' : 'Paquete o solución' }}</small></td>
+                        <td>{{ $services[$kit->service_slug]['name'] ?? $kit->service_slug }}</td>
+                        <td>
+                            @if ($kit->pricing_type === 'quote')
+                                Cotización
+                            @else
+                                {{ $kit->pricing_type === 'from' ? 'Desde ' : '' }}${{ number_format((float) $kit->price, 2) }}
+                            @endif
+                        </td>
                         <td><span @class(['status-pill', 'is-active' => $kit->active])>{{ $kit->active ? 'Publicado' : 'Borrador' }}</span></td>
                         <td>{{ $kit->sort_order }}</td>
                         <td class="table-actions">
@@ -27,7 +34,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="5" class="empty-cell">Todavía no hay kits. Crea el primero cuando tengas definidos precio y características.</td></tr>
+                    <tr><td colspan="6" class="empty-cell">Todavía no hay opciones en el catálogo. Puedes crear paquetes con precio o soluciones que requieran valoración.</td></tr>
                 @endforelse
             </tbody>
         </table>

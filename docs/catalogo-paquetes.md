@@ -1,6 +1,8 @@
-# Catálogo de introducción Sentriq
+# Catálogo de paquetes y soluciones Sentriq
 
-Los paquetes se guardan en `kits`, no en las plantillas. Se administran en `/admin/kits`: nombre, precio, etiqueta de introducción, características, condiciones, fotografías, orden y publicación. La página pública es `/servicios/camaras-de-seguridad#paquetes`.
+Las opciones se guardan en la tabla `kits` y se administran desde **Catálogo** en `/admin/kits`. Cada opción se vincula a un servicio de `config/sentriq.php` y puede tener precio fijo, precio desde o requerir cotización. El número de cámaras solo se solicita para videovigilancia. La página pública de cada servicio muestra las opciones activas que le corresponden; por ejemplo, `/servicios/camaras-de-seguridad#paquetes`.
+
+La migración `2026_10_30_000001_expand_kits_to_service_offerings.php` agrega el tipo de precio y permite omitir el importe cuando la opción requiere cotización. Los registros existentes conservan su servicio y precio y quedan como precio fijo. La migración no crea ni modifica paquetes comerciales.
 
 ## Carga en cada entorno
 
@@ -12,7 +14,7 @@ php artisan db:seed --class=IntroductionKitsSeeder --force
 
 El importador crea únicamente los slugs que faltan. Ejecutarlo de nuevo no duplica ni sobrescribe las modificaciones del administrador. No usar `migrate:fresh` en una base con datos. El despliegue automático solo actualiza Git, no ejecuta migraciones ni seeders; estos comandos se requieren en un entorno nuevo o cuando un cambio de esquema o catálogo lo amerite. Resguardar primero la base de datos del entorno.
 
-Producción fue comprobada el 29 de octubre de 2026: la página pública de cámaras muestra los paquetes Sentriq Hogar (4 cámaras), Sentriq Negocio (6) y Sentriq Cobertura (8).
+Producción fue comprobada el 29 de octubre de 2026: la página pública de cámaras muestra los paquetes Sentriq Hogar (4 cámaras), Sentriq Negocio (6) y Sentriq Cobertura (8). Esa oferta existente de HiLook permanece separada del paquete Dahua de 4 cámaras analizado después a $7,900; este último no se carga ni se publica mediante esta modificación.
 
 Las fotos iniciales están versionadas en `public/assets/images/kits`. Las nuevas cargas del administrador van a `storage/app/public/kits` y se sirven mediante `public/storage`. Respaldar esa carpeta además de la base. Al reemplazar o quitar una foto se conserva el archivo anterior para evitar pérdidas; ya no se referencia desde el catálogo.
 

@@ -56,10 +56,10 @@
             <div class="container">
                 <div class="section-heading section-heading--split">
                     <div>
-                        <span class="eyebrow">Kits con instalación incluida</span>
-                        <h2>Opciones listas para comenzar</h2>
+                        <span class="eyebrow">Catálogo Sentriq</span>
+                        <h2>Paquetes y soluciones</h2>
                     </div>
-                    <p>Elige la cobertura para tu casa o negocio. Revisa el equipo y el alcance de cada paquete; cualquier trabajo adicional se cotiza antes de instalar.</p>
+                    <p>Revisa las opciones para este servicio y su alcance. Cualquier trabajo adicional se cotiza antes de comenzar.</p>
                 </div>
 
                 <div class="kit-grid">
@@ -84,7 +84,13 @@
                             @if ($kit->description)
                                 <p>{{ $kit->description }}</p>
                             @endif
-                            <strong class="kit-card__price">${{ number_format((float) $kit->price, 2) }} <small>MXN</small></strong>
+                            <strong class="kit-card__price">
+                                @if ($kit->pricing_type === 'quote')
+                                    Precio por cotizar
+                                @else
+                                    {{ $kit->pricing_type === 'from' ? 'Desde ' : '' }}${{ number_format((float) $kit->price, 2) }} <small>MXN</small>
+                                @endif
+                            </strong>
                             @if ($kit->price_label)
                                 <span class="kit-card__price-label">{{ $kit->price_label }}</span>
                             @endif
@@ -102,8 +108,8 @@
                                     <p>{{ $kit->conditions }}</p>
                                 </details>
                             @endif
-                            <a class="button button--whatsapp" href="https://wa.me/{{ config('sentriq.contact.whatsapp_number') }}?text={{ rawurlencode('Hola Sentriq, me interesa el '.$kit->name.' con precio de $'.number_format((float) $kit->price, 2).' MXN.') }}" target="_blank" rel="noopener">
-                                <x-icon name="whatsapp" /> Consultar este kit
+                            <a class="button button--whatsapp" href="https://wa.me/{{ config('sentriq.contact.whatsapp_number') }}?text={{ rawurlencode($kit->pricing_type === 'quote' ? 'Hola Sentriq, me interesa la solución '.$kit->name.'. ¿Podemos revisar mi proyecto?' : 'Hola Sentriq, me interesa el paquete '.$kit->name.' con precio '.($kit->pricing_type === 'from' ? 'desde ' : '').'$'.number_format((float) $kit->price, 2).' MXN.') }}" target="_blank" rel="noopener">
+                                <x-icon name="whatsapp" /> {{ $kit->pricing_type === 'quote' ? 'Solicitar valoración' : 'Consultar opción' }}
                             </a>
                         </article>
                     @endforeach

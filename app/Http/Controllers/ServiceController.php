@@ -24,9 +24,7 @@ class ServiceController extends Controller
             'slug' => $service,
             'service' => $services[$service],
             'services' => $services,
-            'kits' => $service === 'camaras-de-seguridad'
-                ? Kit::published()->get()
-                : collect(),
+            'kits' => Kit::published()->where('service_slug', $service)->get(),
         ]);
     }
 }
